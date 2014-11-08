@@ -11,19 +11,32 @@ import (
 )
 
 const (
-	bannerW    = 2
-	bannerH    = 2
-	zoomFactor = 20 // 20x zoom
+	bannerW = 20
+	bannerH = 40
 
-	halfW = bannerW / 2
-	halfH = bannerH / 2
-	fullW = bannerW - 1
-	fullH = bannerH - 1
+	zoomFactor = 8 // 8x zoom
 
-	maxPatterns = 6
+	fullW  = bannerW
+	fullH  = bannerH
+	halfW  = bannerW / 2
+	halfH  = bannerH / 2
+	thirdW = bannerW / 3
+	thirdH = bannerH / 3
 
-	patternTopHalf    = 0
-	patternBottomHalf = 1
+	maxX = fullW - 1
+	maxY = fullH - 1
+
+	maxPatterns = 99 // 6
+
+	patternUpperHalf = iota
+	patternLowerHalf
+	patternUpperThird
+	patternLowerThird
+	patternUpperTriangle
+	patternLowerTriangle
+	patternCircle
+	patternHorizontalLine
+	patternVerticalLine
 )
 
 type Pattern struct {
@@ -39,16 +52,32 @@ type Banner struct {
 func (b *Banner) Draw(svg *onthefly.Tag) {
 	// generate the picture, then draw
 	for _, pattern := range b.patterns {
-		if pattern.ptype == patternTopHalf {
+		switch pattern.ptype {
+		case patternUpperHalf:
 			svg.Box(0, 0, fullW, halfH, pattern.color)
+		case patternLowerHalf:
+			svg.Box(0, halfH, fullW, halfH, pattern.color)
+		case patternUpperThird:
+			svg.Box(0, 0, fullW, thirdH, pattern.color)
+		case patternLowerThird:
+			svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, pattern.color)
+		case patternUpperTriangle:
+			svg.Triangle(0, 0, fullW, 0, halfW, halfH, pattern.color)
+		case patternLowerTriangle:
+			svg.Triangle(0, fullH, fullW, fullH, halfW, halfH, pattern.color)
+		case patternCircle:
+			svg.Circle(halfW, halfH, thirdW, pattern.color)
+		case patternHorizontalLine:
+			svg.Box(0, halfH-1, fullW, 2, pattern.color)
+		case patternVerticalLine:
+			svg.Box(halfW-1, 0, 2, fullH, pattern.color)
 		}
 	}
-	svg.Pixel(0, 0, 0, 255, 0)
-	svg.Pixel(fullW, 0, 0, 0, 255)
-	svg.Pixel(0, fullH, 255, 255, 0)
-	svg.Pixel(fullW, fullH, 0, 255, 255)
-	// x, y, w, h, color
-	//svg.Pixel(x, y, r, g, b)
+	// For debugging
+	//svg.Pixel(0, 0, 0, 255, 0)
+	//svg.Pixel(maxX, 0, 0, 0, 255)
+	//svg.Pixel(0, maxY, 255, 255, 0)
+	//svg.Pixel(maxX, maxY, 0, 255, 255)
 }
 
 // Generate a new SVG Page for a banner
@@ -56,9 +85,7 @@ func (b *Banner) SvgPage() *onthefly.Page {
 	page, svg := onthefly.NewTinySVG(0, 0, bannerW, bannerH)
 	desc := svg.AddNewTag("desc")
 	desc.AddContent("Hello SVG")
-
 	b.Draw(svg)
-
 	return page
 }
 
@@ -71,8 +98,8 @@ func newPattern(color string, pattern int) *Pattern {
 }
 
 func (b *Banner) AddPattern(p *Pattern) {
-	if len(b.patterns) > 6 {
-		log.Fatalln("Too many patters for banner, max 6")
+	if len(b.patterns) > maxPatterns {
+		log.Fatalln("Too many patters for banner, max", maxPatterns)
 	}
 	b.patterns = append(b.patterns, p)
 }
@@ -83,7 +110,7 @@ func indexPage(svgurl string) *onthefly.Page {
 	// Create a new HTML5 page, with CSS included
 	page := onthefly.NewHTML5Page("Banner")
 
-	page.AddContent("blabla")
+	page.AddContent("Banner")
 
 	// Change the margin (em is default)
 	page.SetMargin(4)
@@ -95,40 +122,41 @@ func indexPage(svgurl string) *onthefly.Page {
 	page.SetColor("black", "#d0d0d0")
 
 	// Include the generated SVG image on the page
-	body, err := page.GetTag("body")
-	if err == nil {
-		// CSS attributes for the body tag
-		body.AddStyle("font-size", "2em")
+	body, _ := page.GetTag("body")
 
-		// Paragraph
-		p := body.AddNewTag("p")
+	// CSS attributes for the body tag
+	body.AddStyle("font-size", "2em")
 
-		// CSS style
-		p.AddStyle("margin-top", "2em")
+	// Paragraph
+	p := body.AddNewTag("p")
 
-		objectOrImg := "object"
+	// CSS style
+	p.AddStyle("margin-top", "2em")
 
-		if objectOrImg == "object" {
-			// object tag
-			tag := p.AddNewTag("object")
-			// HTML attributes
-			tag.AddAttrib("data", svgurl)
-			tag.AddAttrib("type", "image/svg+xml")
-		} else {
-			// img tag
-			tag := p.AddNewTag("img")
-			// HTML attributes
-			tag.AddAttrib("src", svgurl)
-			tag.AddAttrib("alt", "Banner")
-		}
-
-		// CSS style
-		w := strconv.Itoa(bannerW * zoomFactor)
-		h := strconv.Itoa(bannerH * zoomFactor)
-		object.AddStyle("width", w + "px")
-		object.AddStyle("height", h + "px")
-		object.AddStyle("border", "8px solid black")
+	var (
+		tag          *onthefly.Tag
+		useObjectTag = true
+	)
+	if useObjectTag {
+		// object tag
+		tag = p.AddNewTag("object")
+		// HTML attributes
+		tag.AddAttrib("data", svgurl)
+		tag.AddAttrib("type", "image/svg+xml")
+	} else {
+		// img tag
+		tag = p.AddNewTag("img")
+		// HTML attributes
+		tag.AddAttrib("src", svgurl)
+		tag.AddAttrib("alt", "Banner")
 	}
+
+	// CSS style
+	w := strconv.Itoa(bannerW * zoomFactor)
+	h := strconv.Itoa(bannerH * zoomFactor)
+	tag.AddStyle("width", w+"px")
+	tag.AddStyle("height", h+"px")
+	tag.AddStyle("border", "8px solid black")
 
 	return page
 }
@@ -138,7 +166,23 @@ func main() {
 	log.Println("onthefly ", onthefly.Version)
 
 	b := newBanner()
-	p := newPattern("red", patternTopHalf)
+	p := newPattern("red", patternUpperHalf)
+	b.AddPattern(p)
+	p = newPattern("blue", patternLowerHalf)
+	b.AddPattern(p)
+	p = newPattern("white", patternUpperTriangle)
+	b.AddPattern(p)
+	p = newPattern("black", patternLowerTriangle)
+	b.AddPattern(p)
+	p = newPattern("yellow", patternCircle)
+	b.AddPattern(p)
+	p = newPattern("green", patternUpperThird)
+	b.AddPattern(p)
+	p = newPattern("purple", patternLowerThird)
+	b.AddPattern(p)
+	p = newPattern("orange", patternHorizontalLine)
+	b.AddPattern(p)
+	p = newPattern("red", patternVerticalLine)
 	b.AddPattern(p)
 
 	// Create a Negroni instance and a ServeMux instance
