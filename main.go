@@ -192,6 +192,9 @@ func main() {
 	// Publish the generated Page in a way that connects the HTML and CSS
 	page.Publish(mux, "/", "/css/banner.css", false)
 
+	// Share the files in public (already included in Classic)
+	//n.Use(negroni.NewStatic(http.Dir("public")))
+
 	// Handler goes last
 	n.UseHandler(mux)
 
