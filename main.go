@@ -81,19 +81,19 @@ func (b *Banner) Draw(svg *onthefly.Tag) {
 }
 
 // Generate a new SVG Page for a banner
-func (b *Banner) SvgPage() *onthefly.Page {
+func (b *Banner) SVGpage() *onthefly.Page {
 	page, svg := onthefly.NewTinySVG(0, 0, bannerW, bannerH)
 	desc := svg.AddNewTag("desc")
-	desc.AddContent("Hello SVG")
+	desc.AddContent("A banner")
 	b.Draw(svg)
 	return page
 }
 
-func newBanner() *Banner {
+func NewBanner() *Banner {
 	return &Banner{}
 }
 
-func newPattern(color string, pattern int) *Pattern {
+func NewPattern(color string, pattern int) *Pattern {
 	return &Pattern{color, pattern}
 }
 
@@ -105,7 +105,7 @@ func (b *Banner) AddPattern(p *Pattern) {
 }
 
 // Generate a new onthefly Page (HTML5 and CSS combined)
-func indexPage(svgurl string) *onthefly.Page {
+func mainPage(svgurl string) *onthefly.Page {
 
 	// Create a new HTML5 page, with CSS included
 	page := onthefly.NewHTML5Page("Banner")
@@ -163,43 +163,34 @@ func indexPage(svgurl string) *onthefly.Page {
 
 // Set up the paths and handlers then start serving.
 func main() {
-	log.Println("onthefly ", onthefly.Version)
+	b := NewBanner()
 
-	b := newBanner()
-	p := newPattern("red", patternUpperHalf)
-	b.AddPattern(p)
-	p = newPattern("blue", patternLowerHalf)
-	b.AddPattern(p)
-	p = newPattern("white", patternUpperTriangle)
-	b.AddPattern(p)
-	p = newPattern("black", patternLowerTriangle)
-	b.AddPattern(p)
-	p = newPattern("yellow", patternCircle)
-	b.AddPattern(p)
-	p = newPattern("green", patternUpperThird)
-	b.AddPattern(p)
-	p = newPattern("purple", patternLowerThird)
-	b.AddPattern(p)
-	p = newPattern("orange", patternHorizontalLine)
-	b.AddPattern(p)
-	p = newPattern("red", patternVerticalLine)
-	b.AddPattern(p)
+	// TODO: Add a list of patterns to a banner
+	b.AddPattern(NewPattern("red", patternUpperHalf))
+	b.AddPattern(NewPattern("blue", patternLowerHalf))
+	b.AddPattern(NewPattern("white", patternUpperTriangle))
+	b.AddPattern(NewPattern("black", patternLowerTriangle))
+	b.AddPattern(NewPattern("yellow", patternCircle))
+	b.AddPattern(NewPattern("green", patternUpperThird))
+	b.AddPattern(NewPattern("purple", patternLowerThird))
+	b.AddPattern(NewPattern("orange", patternHorizontalLine))
+	b.AddPattern(NewPattern("red", patternVerticalLine))
 
 	// Create a Negroni instance and a ServeMux instance
 	n := negroni.Classic()
 	mux := http.NewServeMux()
 
-	// Publish the generated SVG as "/circles.svg"
-	svgurl := "/circles.svg"
+	// Publish the generated SVG as "/banner.svg"
+	svgurl := "/img/banner.svg"
 	mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
-		fmt.Fprint(w, b.SvgPage().String())
+		fmt.Fprint(w, b.SVGpage().String())
 	})
 
 	// Generate a Page that includes the svg image
-	page := indexPage(svgurl)
+	page := mainPage(svgurl)
 	// Publish the generated Page in a way that connects the HTML and CSS
-	page.Publish(mux, "/", "/style.css", false)
+	page.Publish(mux, "/", "/css/banner.css", false)
 
 	// Handler goes last
 	n.UseHandler(mux)
