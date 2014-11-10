@@ -125,6 +125,7 @@ func mainPage(mux *http.ServeMux, path string, r *render.Render) {
 			"title": version_string,
 		}
 
+		// TODO: Enable this if a development environment variable is on
 		// Reload template (great for development)
 		//r = render.New(render.Options{})
 
