@@ -125,7 +125,7 @@ func mainPage(mux *http.ServeMux, path string, r *render.Render) {
 			"title": version_string,
 		}
 
-		// Reload template
+		// Reload template (great for development)
 		r = render.New(render.Options{})
 
 		// Render and return
@@ -140,7 +140,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 		bw := strconv.Itoa(bannerW*zoomFactor) + "px"
 		bh := strconv.Itoa(bannerH*zoomFactor) + "px"
 
-		// Reload template
+		// Reload template (great for development)
 		r = render.New(render.Options{})
 
 		// The recipe
@@ -171,6 +171,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 		r.HTML(w, http.StatusOK, "random", data)
 	})
 
+	// TODO: One url per generated banner. /img/generated/123/123/result.svg
 	mux.HandleFunc("/img/random.svg", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
 		fmt.Fprint(w, b.SVGpage().String())
