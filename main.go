@@ -135,7 +135,7 @@ func mainPage(svgurl string) *onthefly.Page {
 
 	var (
 		tag          *onthefly.Tag
-		useObjectTag = true
+		useObjectTag = false
 	)
 	if useObjectTag {
 		// object tag
@@ -167,14 +167,14 @@ func main() {
 
 	// TODO: Add a list of patterns to a banner
 	b.AddPattern(NewPattern("red", patternUpperHalf))
-	b.AddPattern(NewPattern("blue", patternLowerHalf))
-	b.AddPattern(NewPattern("white", patternUpperTriangle))
-	b.AddPattern(NewPattern("black", patternLowerTriangle))
-	b.AddPattern(NewPattern("yellow", patternCircle))
-	b.AddPattern(NewPattern("green", patternUpperThird))
-	b.AddPattern(NewPattern("purple", patternLowerThird))
-	b.AddPattern(NewPattern("orange", patternHorizontalLine))
-	b.AddPattern(NewPattern("red", patternVerticalLine))
+	b.AddPattern(NewPattern("purple", patternLowerHalf))
+	b.AddPattern(NewPattern("blue", patternUpperTriangle))
+	b.AddPattern(NewPattern("blue", patternLowerTriangle))
+	b.AddPattern(NewPattern("blue", patternCircle))
+	b.AddPattern(NewPattern("blue", patternUpperThird))
+	b.AddPattern(NewPattern("blue", patternLowerThird))
+	b.AddPattern(NewPattern("blue", patternHorizontalLine))
+	b.AddPattern(NewPattern("orange", patternVerticalLine))
 
 	// Create a Negroni instance and a ServeMux instance
 	n := negroni.Classic()
