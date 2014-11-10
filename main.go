@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/codegangsta/negroni"
 	"github.com/xyproto/onthefly"
@@ -28,20 +30,95 @@ const (
 
 	maxPatterns = 99 // 6
 
-	patternUpperHalf = iota
-	patternLowerHalf
-	patternUpperThird
-	patternLowerThird
-	patternUpperTriangle
-	patternLowerTriangle
-	patternCircle
-	patternHorizontalLine
-	patternVerticalLine
+	// Same order as minecraft.gamepedia.com/Banner
+	patternLowerThird         = iota // Base Fess Banner
+	patternUpperThird                // Chief Fess Banner
+	patternLeftThird                 // Pale Dexter Banner
+	patternRightThird                // Pale Sinister Banner
+	patternCenterThird               // Pale Banner
+	patternHorizontalLine            // Fess Banner
+	patternDiagonal1                 // Bend Banner
+	patternDiagonal2                 // Bend Sinister Banner
+	patterStripes                    // Paly Banner
+	patternDiaCross                  // Saltire Banner
+	patternCross                     // Cross Banner
+	patternUpperLeftTriangle         // Per Bend Sinister Banner
+	patternUpperRightTriangle        // Per Bend Banner
+	patternLowerLeftTriangle         // Per Bend Inverted Banner
+	patternLowerRightTriangle        // Per Bend Sinister Inverted Banner
+	patternLeftHalf                  // Per Pale Banner
+	patternRightHalf                 // Per Pale Inverted Banner
+	patternUpperHalf                 // Per Fess Banner
+	patternLowerHalf                 // Per Fess Inverted Banner
+	patternLowerLeftSquare           // Base Dexter Canton Banner
+	patternLowerRightSquare          // Base Sinister Canton Banner
+	patternUpperLeftSquare           // Chief Dexter Canton Banner
+	patternUpperRightSqaure          // Chief Sinister Canton Banner
+	patternLowerTriangle             // Chevron Banner
+	patternUpperTriangle             // Inverted Chevron Banner
+	patternLowerWaves                // Base Indented Banner
+	patternUpperWaves                // Chief Indented Banner
+	patternCircle                    // Roundel Banner
+	patternDiamond                   // Lozenge Banner
+	patternBorder                    // Bordure Banner
+	patternWaveBorder                // Black/Dyed Borduer Indented Banner
+	patternBricks                    // Black/Dyed Field Masoned Banner
+	patternGradientDown              // Gradient Banner
+	patternGradientUp                // Base Gradient Banner
+	patternCreeper                   // Black/Dyed Creeper Charge Banner
+	patternSkull                     // Black/Dyed Skull Charge Banner
+	patternFlower                    // Black/Dyed Flower Charge Banner
+	patternLogo                      // Black/Dyed Mojang Charge Banner
+
+	// Custom patterns
+	patternFull // Background
+
+	colorWhite = iota
+	colorOrange
+	colorMagenta
+	colorLightBlue
+	colorYellow
+	colorLime
+	colorPink
+	colorGray
+	colorLightGray
+	colorCyan
+	colorPurple
+	colorBlue
+	colorBrown
+	colorGreen
+	colorRed
+	colorBlack
+
+	// Custom colors
+	colorBrightWhite
+)
+
+var (
+	colors = map[int]string{
+		colorWhite:       "#989898",
+		colorOrange:      "#804d23",
+		colorMagenta:     "#6b3181",
+		colorLightBlue:   "#3e5b7f",
+		colorYellow:      "#898923",
+		colorLime:        "#4c7815",
+		colorPink:        "#8f4c62",
+		colorGray:        "#313131",
+		colorLightGray:   "#5b5b5b",
+		colorCyan:        "#314c5b",
+		colorPurple:      "#4d2b6a",
+		colorBlue:        "#23316b",
+		colorBrown:       "#3e3123",
+		colorGreen:       "#3e4c23",
+		colorRed:         "#5c2323",
+		colorBlack:       "#151515",
+		colorBrightWhite: "#ffffff",
+	}
 )
 
 type Pattern struct {
-	color string
-	ptype int
+	pattern int
+	color   int
 }
 
 type Banner struct {
@@ -51,26 +128,62 @@ type Banner struct {
 
 func (b *Banner) Draw(svg *onthefly.Tag) {
 	// generate the picture, then draw
-	for _, pattern := range b.patterns {
-		switch pattern.ptype {
-		case patternUpperHalf:
-			svg.Box(0, 0, fullW, halfH, pattern.color)
-		case patternLowerHalf:
-			svg.Box(0, halfH, fullW, halfH, pattern.color)
-		case patternUpperThird:
-			svg.Box(0, 0, fullW, thirdH, pattern.color)
-		case patternLowerThird:
-			svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, pattern.color)
-		case patternUpperTriangle:
-			svg.Triangle(0, 0, fullW, 0, halfW, halfH, pattern.color)
-		case patternLowerTriangle:
-			svg.Triangle(0, fullH, fullW, fullH, halfW, halfH, pattern.color)
-		case patternCircle:
-			svg.Circle(halfW, halfH, thirdW, pattern.color)
-		case patternHorizontalLine:
-			svg.Box(0, halfH-1, fullW, 2, pattern.color)
-		case patternVerticalLine:
-			svg.Box(halfW-1, 0, 2, fullH, pattern.color)
+	for _, p := range b.patterns {
+		color, ok := colors[p.color]
+		if !ok {
+			log.Fatalln("Invalid color ID: ", p.color)
+		}
+		//log.Println("color:", color)
+		switch p.pattern {
+		case patternLowerThird: // Base Fess Banner
+			svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, color)
+		case patternUpperThird: // Chief Fess Banner
+			svg.Box(0, 0, fullW, thirdH, color)
+		case patternLeftThird: // Pale Dexter Banner
+		case patternRightThird: // Pale Sinister Banner
+		case patternCenterThird: // Pale Banner
+			svg.Box(halfW-(thirdW/2), 0, thirdW, fullH, color)
+		case patternHorizontalLine: // Fess Banner
+			svg.Box(0, halfH-1, fullW, 2, color)
+		case patternDiagonal1: // Bend Banner
+		case patternDiagonal2: // Bend Sinister Banner
+		case patterStripes: // Paly Banner
+		case patternDiaCross: // Saltire Banner
+		case patternCross: // Cross Banner
+		case patternUpperLeftTriangle: // Per Bend Sinister Banner
+		case patternUpperRightTriangle: // Per Bend Banner
+		case patternLowerLeftTriangle: // Per Bend Inverted Banner
+		case patternLowerRightTriangle: // Per Bend Sinister Inverted Banner
+		case patternLeftHalf: // Per Pale Banner
+		case patternRightHalf: // Per Pale Inverted Banner
+		case patternUpperHalf: // Per Fess Banner
+			svg.Box(0, 0, fullW, halfH, color)
+		case patternLowerHalf: // Per Fess Inverted Banner
+			svg.Box(0, halfH, fullW, halfH, color)
+		case patternLowerLeftSquare: // Base Dexter Canton Banner
+		case patternLowerRightSquare: // Base Sinister Canton Banner
+		case patternUpperLeftSquare: // Chief Dexter Canton Banner
+		case patternUpperRightSqaure: // Chief Sinister Canton Banner
+		case patternLowerTriangle: // Chevron Banner
+			svg.Triangle(0, fullH, fullW, fullH, halfW, halfH, color)
+		case patternUpperTriangle: // Inverted Chevron Banner
+			svg.Triangle(0, 0, fullW, 0, halfW, halfH, color)
+		case patternLowerWaves: // Base Indented Banner
+		case patternUpperWaves: // Chief Indented Banner
+		case patternCircle: // Roundel Banner
+			svg.Circle(halfW, halfH, thirdW, color)
+		case patternDiamond: // Lozenge Banner
+		case patternBorder: // Bordure Banner
+		case patternWaveBorder: // Black/Dyed Borduer Indented Banner
+		case patternBricks: // Black/Dyed Field Masoned Banner
+		case patternGradientDown: // Gradient Banner
+		case patternGradientUp: // Base Gradient Banner
+		case patternCreeper: // Black/Dyed Creeper Charge Banner
+		case patternSkull: // Black/Dyed Skull Charge Banner
+		case patternFlower: // Black/Dyed Flower Charge Banner
+		case patternLogo: // Black/Dyed Mojang Charge Banner
+		case patternFull:
+			svg.Box(0, 0, fullW, fullH, color)
 		}
 	}
 	// For debugging
@@ -93,8 +206,11 @@ func NewBanner() *Banner {
 	return &Banner{}
 }
 
-func NewPattern(color string, pattern int) *Pattern {
-	return &Pattern{color, pattern}
+func NewPattern(pattern, color int) *Pattern {
+	if (pattern < patternLowerThird) || (pattern > patternFull) {
+		log.Fatalln("Invalid pattern ID: ", pattern)
+	}
+	return &Pattern{pattern, color}
 }
 
 func (b *Banner) AddPattern(p *Pattern) {
@@ -105,21 +221,22 @@ func (b *Banner) AddPattern(p *Pattern) {
 }
 
 // Generate a new onthefly Page (HTML5 and CSS combined)
-func mainPage(svgurl string) *onthefly.Page {
+func mainPage(svgurls []string) *onthefly.Page {
+
+	title := "Banners"
 
 	// Create a new HTML5 page, with CSS included
-	page := onthefly.NewHTML5Page("Banner")
-
-	page.AddContent("Banner")
+	page := onthefly.NewHTML5Page(title)
+	page.AddContent(title)
 
 	// Change the margin (em is default)
 	page.SetMargin(4)
 
 	// Change the font family
-	page.SetFontFamily("serif") // or: sans-serif
+	page.SetFontFamily("sans-serif")
 
 	// Change the color scheme
-	page.SetColor("black", "#d0d0d0")
+	page.SetColor("black", "#a0a0a0")
 
 	// Include the generated SVG image on the page
 	body, _ := page.GetTag("body")
@@ -133,22 +250,25 @@ func mainPage(svgurl string) *onthefly.Page {
 	// CSS style
 	p.AddStyle("margin-top", "2em")
 
+	// Add images
 	var (
 		tag          *onthefly.Tag
 		useObjectTag = false
 	)
-	if useObjectTag {
-		// object tag
-		tag = p.AddNewTag("object")
-		// HTML attributes
-		tag.AddAttrib("data", svgurl)
-		tag.AddAttrib("type", "image/svg+xml")
-	} else {
-		// img tag
-		tag = p.AddNewTag("img")
-		// HTML attributes
-		tag.AddAttrib("src", svgurl)
-		tag.AddAttrib("alt", "Banner")
+	for _, svgurl := range svgurls {
+		if useObjectTag {
+			// object tag
+			tag = p.AddNewTag("object")
+			// HTML attributes
+			tag.AddAttrib("data", svgurl)
+			tag.AddAttrib("type", "image/svg+xml")
+		} else {
+			// img tag
+			tag = p.AddNewTag("img")
+			// HTML attributes
+			tag.AddAttrib("src", svgurl)
+			tag.AddAttrib("alt", "Banner")
+		}
 	}
 
 	// CSS style
@@ -161,39 +281,48 @@ func mainPage(svgurl string) *onthefly.Page {
 	return page
 }
 
+func randomColor() int {
+	return colorWhite + rand.Intn((colorBlack-colorWhite)+1)
+}
+
+func seed() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 // Set up the paths and handlers then start serving.
 func main() {
-	b := NewBanner()
-
-	// TODO: Add a list of patterns to a banner
-	b.AddPattern(NewPattern("red", patternUpperHalf))
-	b.AddPattern(NewPattern("purple", patternLowerHalf))
-	b.AddPattern(NewPattern("blue", patternUpperTriangle))
-	b.AddPattern(NewPattern("blue", patternLowerTriangle))
-	b.AddPattern(NewPattern("blue", patternCircle))
-	b.AddPattern(NewPattern("blue", patternUpperThird))
-	b.AddPattern(NewPattern("blue", patternLowerThird))
-	b.AddPattern(NewPattern("blue", patternHorizontalLine))
-	b.AddPattern(NewPattern("orange", patternVerticalLine))
+	seed()
 
 	// Create a Negroni instance and a ServeMux instance
 	n := negroni.Classic()
 	mux := http.NewServeMux()
 
-	// Publish the generated SVG as "/banner.svg"
-	svgurl := "/img/banner.svg"
-	mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
-		w.Header().Add("Content-Type", "image/svg+xml")
-		fmt.Fprint(w, b.SVGpage().String())
-	})
+	var (
+		svgurls []string
+		b       *Banner
+	)
+	for i := patternLowerThird; i < patternLogo; i++ {
 
-	// Generate a Page that includes the svg image
-	page := mainPage(svgurl)
+		b = NewBanner()
+		b.AddPattern(NewPattern(patternFull, colorBrightWhite))
+		b.AddPattern(NewPattern(i, colorRed))
+
+		svgString := b.SVGpage().String()
+
+		// Publish the generated SVG as "/img/banner_NNN.svg"
+		svgurl := fmt.Sprintf("/img/banner_%d.svg", i)
+		mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
+			w.Header().Add("Content-Type", "image/svg+xml")
+			fmt.Fprint(w, svgString)
+		})
+
+		svgurls = append(svgurls, svgurl)
+	}
+
+	// Generate a Page that includes the svg images
+	page := mainPage(svgurls)
 	// Publish the generated Page in a way that connects the HTML and CSS
 	page.Publish(mux, "/", "/css/banner.css", false)
-
-	// Share the files in public (already included in Classic)
-	//n.Use(negroni.NewStatic(http.Dir("public")))
 
 	// Handler goes last
 	n.UseHandler(mux)
