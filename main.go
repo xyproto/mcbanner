@@ -7,9 +7,11 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"math"
 
 	"github.com/codegangsta/negroni"
 	"github.com/xyproto/onthefly"
+	"github.com/unrolled/render"
 )
 
 const (
@@ -283,17 +285,95 @@ func (b *Banner) Draw(svg *onthefly.Tag) {
 			svg.Box(sixthW+sixthW, thirdH+fifthH, tenthW, halfW/2, color)
 			svg.Box(fullW-(sixthW+sixthW)-tenthW, thirdH+fifthH, tenthW, halfW/2, color)
 		case patternSkull: // Black/Dyed Skull Charge Banner
+			hy := (tenthH/2)
+			boxx := fifthW+(tenthW/2)
+			boxy := halfH-sixthH
+
+			// Top of the head
+			svg.Box(boxx, boxy-hy, halfW, hy*2, color)
+
+			// Side of face
+			svg.Box(boxx, boxy+hy, hy, hy*2, color)
+			svg.Box(boxx+(halfW-hy), boxy+hy, hy, hy*2, color)
+
+			// Nose
+			svg.Box(boxx+(halfW-hy)/2, boxy+hy, hy, hy/2, color)
+
+			// Cheeks
+			svg.Box(boxx+(halfW-hy)/2-hy, boxy+hy+hy/2, hy, hy/2, color)
+			svg.Box(boxx+(halfW-hy)/2+hy, boxy+hy+hy/2, hy, hy/2, color)
+
+			// Bottom of face
+			svg.Box(boxx, boxy+hy*3-(hy/2), halfW, 1, color)
+
+			// The cross
+			ofs := thirdH // offset from bottom
+			svg.Line(sixthW, fullH-(sixthH+ofs), fullW-sixthW, fullH-ofs, tenthW, color)
+			svg.Line(fullW-sixthW, fullH-(sixthH+ofs), sixthW, fullH-ofs, tenthW, color)
+
+			// Ends of cross
+			svg.Circle(hy+hy/2, halfH+hy/2, hy/2, color)
+			svg.Circle(fullW-(hy+hy/2), halfH+hy/2, hy/2, color)
+			svg.Circle(hy+hy/2, halfH+hy*4-hy/2, hy/2, color)
+			svg.Circle(fullW-(hy+hy/2), halfH+hy*4-hy/2, hy/2, color)
+
 		case patternFlower: // Black/Dyed Flower Charge Banner
+			svg.Circle(halfW, halfH, sixthW, color)
+			numcircles := 10
+			step := (math.Pi*2.0)/float64(numcircles)
+			radius := fullW/20
+			spacing := float64(thirdW)
+			linet := tenthW/2 // line thickness
+			jointt := tenthW/2 // line joint thickness (circles)
+			var (
+				linex, liney, oldx, oldy, firstx, firsty int
+			)
+			for r := 0.0; r < math.Pi*2.0; r += step {
+				// Draw outer circles
+				x := int(math.Floor(math.Cos(r)*spacing + 0.5)) + halfW
+				y := int(math.Floor(math.Sin(r)*spacing + 0.5)) + halfH
+				svg.Circle(x, y, radius, color)
+				// Draw circle made out of lines
+				oldx = linex
+				oldy = liney
+				linex = int(math.Floor(math.Cos(r)*spacing*0.8 + 0.5)) + halfW
+				liney = int(math.Floor(math.Sin(r)*spacing*0.8 + 0.5)) + halfH
+				if oldx == 0 {
+					firstx = linex
+					firsty = liney
+				} else {
+					svg.Line(oldx, oldy, linex, liney, linet, color)
+					svg.Circle(linex, liney, jointt, color)
+				}
+			}
+			svg.Line(linex, liney, firstx, firsty, linet, color)
+			svg.Circle(firstx, firsty, jointt, color)
 		case patternLogo: // Black/Dyed Mojang Charge Banner
+			numsteps := 10
+			step := (math.Pi*2.0)/float64(numsteps)
+			spacing := float64(thirdW)
+			linet := fifthW // line thickness
+			var (
+				linex, liney, oldx, oldy int
+			)
+			for r := math.Pi/2; r < (math.Pi*2.0)-(math.Pi/2); r += step {
+				// Draw circle made out of lines
+				oldx = linex
+				oldy = liney
+				linex = int(math.Floor(math.Cos(r)*spacing*0.8 + 0.5)) + halfW
+				liney = int(math.Floor(math.Sin(r)*spacing*0.8 + 0.5)) + halfH
+				if oldx == 0 {
+					svg.Line(linex, liney, fullW-fifthW, liney, linet, color)
+				} else {
+					svg.Line(oldx, oldy, linex, liney, linet, color)
+				}
+			}
+			svg.Line(linex, liney, fullW-fifthW, liney+fifthW, linet, color)
+			svg.Line(fullW-thirdW, thirdH, (fullW-thirdW)+tenthW, thirdH+tenthW, tenthW, color)
 		case patternFull:
 			svg.Box(0, 0, fullW, fullH, color)
 		}
 	}
-	// For debugging
-	//svg.Pixel(0, 0, 0, 255, 0)
-	//svg.Pixel(maxX, 0, 0, 0, 255)
-	//svg.Pixel(0, maxY, 255, 255, 0)
-	//svg.Pixel(maxX, maxY, 0, 255, 255)
 }
 
 // Generate a new SVG Page for a banner
@@ -324,10 +404,7 @@ func (b *Banner) AddPattern(p *Pattern) {
 }
 
 // Generate a new onthefly Page (HTML5 and CSS combined)
-func mainPage(svgurls []string) *onthefly.Page {
-
-	title := "Banners"
-
+func patternGalleryPage(title string, svgurls []string) *onthefly.Page {
 	// Create a new HTML5 page, with CSS included
 	page := onthefly.NewHTML5Page(title)
 	page.AddContent(title)
@@ -392,19 +469,13 @@ func seed() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Set up the paths and handlers then start serving.
-func main() {
-	seed()
-
-	// Create a Negroni instance and a ServeMux instance
-	n := negroni.Classic()
-	mux := http.NewServeMux()
-
+// Create a pattern gallery under /patterns
+func patternGallery(mux *http.ServeMux, path string) {
 	var (
 		svgurls []string
 		b       *Banner
 	)
-	for i := patternLowerThird; i < patternLogo; i++ {
+	for i := patternLowerThird; i <= patternLogo; i++ {
 
 		b = NewBanner()
 		b.AddPattern(NewPattern(patternFull, colorBrightWhite))
@@ -423,9 +494,36 @@ func main() {
 	}
 
 	// Generate a Page that includes the svg images
-	page := mainPage(svgurls)
+	page := patternGalleryPage("Pattern gallery", svgurls)
 	// Publish the generated Page in a way that connects the HTML and CSS
-	page.Publish(mux, "/", "/css/banner.css", false)
+	page.Publish(mux, path, "/css/banner.css", false)
+}
+
+// Set up the paths and handlers then start serving.
+func main() {
+	// Seed the random number generator
+	seed()
+
+	// Create a Negroni instance and a ServeMux instance
+	n := negroni.Classic()
+	r := render.New(render.Options{})
+	mux := http.NewServeMux()
+
+	// Main page
+	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		data := map[string]string{
+			"title": "Banner Generator",
+		}
+
+		// Reload template
+		r = render.New(render.Options{})
+
+		// Render and return
+		r.HTML(w, http.StatusOK, "index", data)
+	})
+
+	// Publish a pattern gallery
+    patternGallery(mux, "/patterns")
 
 	// Handler goes last
 	n.UseHandler(mux)

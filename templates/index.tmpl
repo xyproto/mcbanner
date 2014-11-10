@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>{{.title}}</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <style>
+    body {
+      margin: 5em;
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      background: #e0e0e0;
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.0em;
+    }
+    div#opt:hover {
+      background: white;
+      color: black;
+    }
+    div#lbl {
+      left: 20%;
+      color: black;
+      font-size: 3em;
+      text-align: left;
+      font-weight: 400;
+      margin-bottom: 0.7em;
+    }
+    div#opt {
+      font-weight: 300;
+      font-size: 2em;
+      -moz-box-shadow: 0 0 3px #ccc;
+      -webkit-box-shadow: 0 0 3px #ccc;
+      box-shadow: 0 0 3px #ccc;
+      margin-top: 0.2em;
+      margin-bottom: 0.2em;
+      padding: 0.1em;
+      background: #202020;
+    }
+  </style>
+</head>
+<body>
+  <div id="lbl">{{.title}}</div>
+  <a href="/patterns"><div id="opt">Pattern gallery</div></a>
+  <a href="/random"><div id="opt">Random banner</div></a>
+</body>
+</html>
