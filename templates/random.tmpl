@@ -42,12 +42,21 @@
       padding: 0.1em;
       background: #202020;
     }
+    img {
+      border: 8px solid black;
+      width: {{.bannerWidth}};
+      height: {{.bannerHeight}};
+    }
   </style>
 </head>
 <body>
   <div id="lbl">{{.title}}</div>
-  <a href="/patterns"><div id="opt">Pattern gallery</div></a>
-  <a href="/random"><div id="opt">Random banner</div></a>
-  <a href="http://minecraft.gamepedia.com/Banner"><div id="opt">Banner reference [Minecraft Wiki]</div></a>
+  <img src="/img/random.svg" alt="Random banner">
+  <h2>{{.howTitle}}</h2>
+  <ul>
+  {{range .how}}
+    <li>{{.}}</li>
+  {{end}}
+  </ul>
 </body>
 </html>
