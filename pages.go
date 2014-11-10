@@ -126,7 +126,7 @@ func mainPage(mux *http.ServeMux, path string, r *render.Render) {
 		}
 
 		// Reload template (great for development)
-		r = render.New(render.Options{})
+		//r = render.New(render.Options{})
 
 		// Render and return
 		r.HTML(w, http.StatusOK, "index", data)
@@ -141,7 +141,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 		bh := strconv.Itoa(bannerH*zoomFactor) + "px"
 
 		// Reload template (great for development)
-		r = render.New(render.Options{})
+		//r = render.New(render.Options{})
 
 		// The recipe
 		how := []string{}
