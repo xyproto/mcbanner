@@ -1,4 +1,4 @@
-package main
+package mcbanner
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 )
 
 // The difference between two color values, as float64 (0..1)
-func diff(a, b uint32) float64 {
+func Colordiff(a, b uint32) float64 {
 	af := float64(a) / (256.0 * 256.0)
 	bf := float64(b) / (256.0 * 256.0)
 	res := af - bf
@@ -18,14 +18,33 @@ func diff(a, b uint32) float64 {
 	return res
 }
 
+func Valuediff(a, b float64) float64 {
+	res := a - b
+	if res < 0 {
+		return -res
+	}
+	return res
+}
+
+// Lightness
+func Value(r, g, b uint32) float64 {
+	rf := float64(r) / (256.0 * 256.0)
+	gf := float64(g) / (256.0 * 256.0)
+	bf := float64(b) / (256.0 * 256.0)
+	return (rf + gf + bf) / 3.0
+}
+
 // Find the distance between two colors, 0..1
 func Distance(c1, c2 color.Color) float64 {
 	r1, g1, b1, _ := c1.RGBA()
 	r2, g2, b2, _ := c2.RGBA()
-	r := diff(r1, r2)
-	g := diff(g1, g2)
-	b := diff(b1, b2)
-	return (r + g + b) / 3.0
+	v1 := Value(r1, g1, b1)
+	v2 := Value(r2, g2, b2)
+	r := Colordiff(r1, r2)
+	g := Colordiff(g1, g2)
+	b := Colordiff(b1, b2)
+	v := Valuediff(v1, v2)
+	return (r + g + b + v) / 4.0
 }
 
 // Find how visually similar two images are, from 0..1
