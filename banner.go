@@ -1,6 +1,7 @@
 package mcbanner
 
 import (
+	"github.com/quirkey/magick"
 	"github.com/xyproto/onthefly"
 	"log"
 )
@@ -63,6 +64,23 @@ func (b *Banner) SVGpage() *onthefly.Page {
 	desc.AddContent("A banner")
 	b.Draw(svg)
 	return page
+}
+
+func (b *Banner) SVG() string {
+	return b.SVGpage().String()
+}
+
+func (b *Banner) PNG() []byte {
+	svgxml := []byte(b.SVG())
+	img, err := magick.NewFromBlob(svgxml, "svg")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	pngbytes, err := img.ToBlob("png")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	return pngbytes
 }
 
 func NewRandomBanner() (b *Banner, how []*Pattern) {
