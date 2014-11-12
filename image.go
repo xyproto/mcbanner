@@ -49,7 +49,7 @@ func Distance(c1, c2 color.Color) float64 {
 
 // Find how visually similar two images are, from 0..1
 // Does not take the human vision into account, only rgb values
-func Equality(png1, png2 []byte) float64 {
+func Likeness(png1, png2 []byte) float64 {
 	buf1 := bytes.NewBuffer(png1)
 	buf2 := bytes.NewBuffer(png2)
 

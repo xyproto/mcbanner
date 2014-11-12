@@ -48,13 +48,13 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 	b, _ := mcbanner.NewRandomBanner()
 	svgxml1 := b.SVG()
 	pngbytes1 := b.PNG()
-	likeness := mcbanner.Equality(pngbytes1, pngbytes2)
+	likeness := mcbanner.Likeness(pngbytes1, pngbytes2)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
 		b, _ = mcbanner.NewRandomBanner()
 		svgxml1 = b.SVG()
 		pngbytes1 = b.PNG()
-		likeness = mcbanner.Equality(pngbytes1, pngbytes2)
+		likeness = mcbanner.Likeness(pngbytes1, pngbytes2)
 
 		bw := strconv.Itoa(mcbanner.BannerW) + "px"
 		bh := strconv.Itoa(mcbanner.BannerH) + "px"
