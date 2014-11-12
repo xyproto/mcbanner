@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/unrolled/render"
+	"github.com/xyproto/mcbanner"
 	"github.com/xyproto/onthefly"
 	"net/http"
 	"strconv"
@@ -13,7 +14,7 @@ const (
 )
 
 // TODO: This works as long as there are not too many users. Fix.
-var gB *Banner
+var gB *mcbanner.Banner
 var gHow []string
 
 func mainPage(mux *http.ServeMux, path string, r *render.Render) {
@@ -36,8 +37,8 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 	pngurl := "/img/a.png"
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
-		bw := strconv.Itoa(bannerW) + "px"
-		bh := strconv.Itoa(bannerH) + "px"
+		bw := strconv.Itoa(mcbanner.BannerW) + "px"
+		bh := strconv.Itoa(mcbanner.BannerH) + "px"
 
 		data := map[string]string{
 			"title":        "Comparison",
@@ -55,9 +56,9 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 		// Render and return
 		r.HTML(w, http.StatusOK, "comparison", data)
 	})
-	b, _ := newRandomBanner()
+	b, _ := mcbanner.NewRandomBanner()
 	svgxml := b.SVGpage().String()
-	pngbytes := Render(svgxml)
+	pngbytes := mcbanner.Render(svgxml)
 	mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
 		fmt.Fprint(w, svgxml)
@@ -131,8 +132,8 @@ func patternGalleryPage(title string, svgurls, captions []string) *onthefly.Page
 `)
 
 	// CSS style
-	w := strconv.Itoa(int(bannerW * zoomFactor * specialPageZoomFactor))
-	h := strconv.Itoa(int(bannerH * zoomFactor * specialPageZoomFactor))
+	w := strconv.Itoa(int(mcbanner.BannerW * zoomFactor * specialPageZoomFactor))
+	h := strconv.Itoa(int(mcbanner.BannerH * zoomFactor * specialPageZoomFactor))
 	tag.AddStyle("width", w+"px")
 	tag.AddStyle("height", h+"px")
 	tag.AddStyle("border", "4px solid black")
@@ -144,14 +145,14 @@ func patternGalleryPage(title string, svgurls, captions []string) *onthefly.Page
 func patternGallery(mux *http.ServeMux, path string) {
 	var (
 		svgurls, descs []string
-		b              *Banner
+		b              *mcbanner.Banner
 	)
-	for i := patternLowerThird; i <= patternLogo; i++ {
+	for i := mcbanner.PatternLowerThird; i <= mcbanner.PatternLogo; i++ {
 
-		b = NewBanner()
-		p, _ := NewPattern(patternFull, colorBrightWhite)
+		b = mcbanner.NewBanner()
+		p, _ := mcbanner.NewPattern(mcbanner.PatternFull, mcbanner.ColorBrightWhite)
 		b.AddPattern(p)
-		p, _ = NewPattern(i, colorRed)
+		p, _ = mcbanner.NewPattern(i, mcbanner.ColorRed)
 		b.AddPattern(p)
 
 		svgString := b.SVGpage().String()
@@ -175,18 +176,18 @@ func patternGallery(mux *http.ServeMux, path string) {
 
 func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
-		bw := strconv.Itoa(bannerW*zoomFactor) + "px"
-		bh := strconv.Itoa(bannerH*zoomFactor) + "px"
+		bw := strconv.Itoa(mcbanner.BannerW*zoomFactor) + "px"
+		bh := strconv.Itoa(mcbanner.BannerH*zoomFactor) + "px"
 
 		// Reload template (great for development)
 		//r = render.New(render.Options{})
 
 		// The recipe
 
-		seed()
+		mcbanner.Seed()
 
-		var howP []*Pattern
-		gB, howP = newRandomBanner()
+		var howP []*mcbanner.Pattern
+		gB, howP = mcbanner.NewRandomBanner()
 
 		// how is a list of pattern.String() based on howP
 		how := []string{}
@@ -209,7 +210,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 	// TODO: One url per generated banner. /img/generated/123/123/result.svg
 	mux.HandleFunc("/img/random.svg", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
-		b, _ := newRandomBanner()
+		b, _ := mcbanner.NewRandomBanner()
 		fmt.Fprint(w, b.SVGpage().String())
 	})
 

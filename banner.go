@@ -6,28 +6,28 @@ import (
 )
 
 const (
-	bannerW = 20
-	bannerH = 40
+	BannerW = 20
+	BannerH = 40
 
-	fullW  = bannerW
-	fullH  = bannerH
-	halfW  = bannerW / 2
-	halfH  = bannerH / 2
-	thirdW = bannerW / 3
-	thirdH = bannerH / 3
-	fifthW = bannerW / 5
-	fifthH = bannerH / 5
-	sixthW = bannerW / 6
-	sixthH = bannerH / 6
-	tenthW = bannerW / 10
-	tenthH = bannerH / 10
+	fullW  = BannerW
+	fullH  = BannerH
+	halfW  = BannerW / 2
+	halfH  = BannerH / 2
+	thirdW = BannerW / 3
+	thirdH = BannerH / 3
+	fifthW = BannerW / 5
+	fifthH = BannerH / 5
+	sixthW = BannerW / 6
+	sixthH = BannerH / 6
+	tenthW = BannerW / 10
+	tenthH = BannerH / 10
 
 	maxX = fullW - 1
 	maxY = fullH - 1
 )
 
 type Banner struct {
-	patterns []*Pattern
+	Patterns []*Pattern
 	curpat   int
 }
 
@@ -36,15 +36,15 @@ func NewBanner() *Banner {
 }
 
 func (b *Banner) AddPattern(p *Pattern) {
-	if len(b.patterns) > maxPatterns {
+	if len(b.Patterns) > maxPatterns {
 		log.Fatalln("Too many patters for banner, max", maxPatterns)
 	}
-	b.patterns = append(b.patterns, p)
+	b.Patterns = append(b.Patterns, p)
 }
 
 func (b *Banner) Draw(svg *onthefly.Tag) {
-	// draw each pattern
-	for _, p := range b.patterns {
+	// draw each Pattern
+	for _, p := range b.Patterns {
 		color, ok := colors[p.color]
 		if !ok {
 			log.Fatalln("Invalid color ID: ", p.color)
@@ -58,7 +58,7 @@ func (b *Banner) SVGpage() *onthefly.Page {
 	if b == nil {
 		log.Fatalln("Can't generate SVG for a *Banner that is nil!")
 	}
-	page, svg := onthefly.NewTinySVG(0, 0, bannerW, bannerH)
+	page, svg := onthefly.NewTinySVG(0, 0, BannerW, BannerH)
 	desc := svg.AddNewTag("desc")
 	desc.AddContent("A banner")
 	b.Draw(svg)
@@ -69,11 +69,11 @@ func NewRandomBanner() (b *Banner, how []*Pattern) {
 	// Generate new banner
 	b = NewBanner()
 	how = []*Pattern{}
-	p, _ := NewPattern(patternFull, randomColor())
+	p, _ := NewPattern(PatternFull, randomColor())
 	b.AddPattern(p)
 	how = append(how, p)
 
-	// Up to 6 different patterns
+	// Up to 6 different Patterns
 	for i := 0; i < maxPatterns; i++ {
 		p, _ = NewPattern(randomPattern(), randomColor())
 		b.AddPattern(p)

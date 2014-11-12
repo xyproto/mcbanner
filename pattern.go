@@ -12,109 +12,109 @@ const (
 	maxPatterns = 6
 
 	// Same order as minecraft.gamepedia.com/Banner
-	patternLowerThird         = iota // Base Fess Banner
-	patternUpperThird                // Chief Fess Banner
-	patternLeftThird                 // Pale Dexter Banner
-	patternRightThird                // Pale Sinister Banner
-	patternCenterThird               // Pale Banner
-	patternHorizontalLine            // Fess Banner
-	patternDiagonal1                 // Bend Banner
-	patternDiagonal2                 // Bend Sinister Banner
+	PatternLowerThird         = iota // Base Fess Banner
+	PatternUpperThird                // Chief Fess Banner
+	PatternLeftThird                 // Pale Dexter Banner
+	PatternRightThird                // Pale Sinister Banner
+	PatternCenterThird               // Pale Banner
+	PatternHorizontalLine            // Fess Banner
+	PatternDiagonal1                 // Bend Banner
+	PatternDiagonal2                 // Bend Sinister Banner
 	patterStripes                    // Paly Banner
-	patternDiaCross                  // Saltire Banner
-	patternCross                     // Cross Banner
-	patternUpperLeftTriangle         // Per Bend Sinister Banner
-	patternUpperRightTriangle        // Per Bend Banner
-	patternLowerLeftTriangle         // Per Bend Inverted Banner
-	patternLowerRightTriangle        // Per Bend Sinister Inverted Banner
-	patternLeftHalf                  // Per Pale Banner
-	patternRightHalf                 // Per Pale Inverted Banner
-	patternUpperHalf                 // Per Fess Banner
-	patternLowerHalf                 // Per Fess Inverted Banner
-	patternLowerLeftSquare           // Base Dexter Canton Banner
-	patternLowerRightSquare          // Base Sinister Canton Banner
-	patternUpperLeftSquare           // Chief Dexter Canton Banner
-	patternUpperRightSqaure          // Chief Sinister Canton Banner
-	patternLowerTriangle             // Chevron Banner
-	patternUpperTriangle             // Inverted Chevron Banner
-	patternLowerWaves                // Base Indented Banner
-	patternUpperWaves                // Chief Indented Banner
-	patternCircle                    // Roundel Banner
-	patternDiamond                   // Lozenge Banner
-	patternBorder                    // Bordure Banner
-	patternWaveBorder                // Black/Dyed Borduer Indented Banner
-	patternBricks                    // Black/Dyed Field Masoned Banner
-	patternGradientDown              // Gradient Banner
-	patternGradientUp                // Base Gradient Banner
-	patternCreeper                   // Black/Dyed Creeper Charge Banner
-	patternSkull                     // Black/Dyed Skull Charge Banner
-	patternFlower                    // Black/Dyed Flower Charge Banner
-	patternLogo                      // Black/Dyed Mojang Charge Banner
+	PatternDiaCross                  // Saltire Banner
+	PatternCross                     // Cross Banner
+	PatternUpperLeftTriangle         // Per Bend Sinister Banner
+	PatternUpperRightTriangle        // Per Bend Banner
+	PatternLowerLeftTriangle         // Per Bend Inverted Banner
+	PatternLowerRightTriangle        // Per Bend Sinister Inverted Banner
+	PatternLeftHalf                  // Per Pale Banner
+	PatternRightHalf                 // Per Pale Inverted Banner
+	PatternUpperHalf                 // Per Fess Banner
+	PatternLowerHalf                 // Per Fess Inverted Banner
+	PatternLowerLeftSquare           // Base Dexter Canton Banner
+	PatternLowerRightSquare          // Base Sinister Canton Banner
+	PatternUpperLeftSquare           // Chief Dexter Canton Banner
+	PatternUpperRightSqaure          // Chief Sinister Canton Banner
+	PatternLowerTriangle             // Chevron Banner
+	PatternUpperTriangle             // Inverted Chevron Banner
+	PatternLowerWaves                // Base Indented Banner
+	PatternUpperWaves                // Chief Indented Banner
+	PatternCircle                    // Roundel Banner
+	PatternDiamond                   // Lozenge Banner
+	PatternBorder                    // Bordure Banner
+	PatternWaveBorder                // Black/Dyed Borduer Indented Banner
+	PatternBricks                    // Black/Dyed Field Masoned Banner
+	PatternGradientDown              // Gradient Banner
+	PatternGradientUp                // Base Gradient Banner
+	PatternCreeper                   // Black/Dyed Creeper Charge Banner
+	PatternSkull                     // Black/Dyed Skull Charge Banner
+	PatternFlower                    // Black/Dyed Flower Charge Banner
+	PatternLogo                      // Black/Dyed Mojang Charge Banner
 
-	// Custom patterns
-	patternFull // Background
+	// Custom Patterns
+	PatternFull // Background
 
-	colorWhite = iota
-	colorOrange
-	colorMagenta
-	colorLightBlue
-	colorYellow
-	colorLime
-	colorPink
-	colorGray
-	colorLightGray
-	colorCyan
-	colorPurple
-	colorBlue
-	colorBrown
-	colorGreen
-	colorRed
-	colorBlack
+	ColorWhite = iota
+	ColorOrange
+	ColorMagenta
+	ColorLightBlue
+	ColorYellow
+	ColorLime
+	ColorPink
+	ColorGray
+	ColorLightGray
+	ColorCyan
+	ColorPurple
+	ColorBlue
+	ColorBrown
+	ColorGreen
+	ColorRed
+	ColorBlack
 
-	// Custom colors
-	colorBrightWhite
+	// Custom Colors
+	ColorBrightWhite
 )
 
-var patternDesc = map[int]string{
-	patternLowerThird:         "Base Fess Banner",
-	patternUpperThird:         "Chief Fess Banner",
-	patternLeftThird:          "Pale Dexter Banner",
-	patternRightThird:         "Pale Sinister Banner",
-	patternCenterThird:        "Pale Banner",
-	patternHorizontalLine:     "Fess Banner",
-	patternDiagonal1:          "Bend Banner",
-	patternDiagonal2:          "Bend Sinister Banner",
+var PatternDesc = map[int]string{
+	PatternLowerThird:         "Base Fess Banner",
+	PatternUpperThird:         "Chief Fess Banner",
+	PatternLeftThird:          "Pale Dexter Banner",
+	PatternRightThird:         "Pale Sinister Banner",
+	PatternCenterThird:        "Pale Banner",
+	PatternHorizontalLine:     "Fess Banner",
+	PatternDiagonal1:          "Bend Banner",
+	PatternDiagonal2:          "Bend Sinister Banner",
 	patterStripes:             "Paly Banner",
-	patternDiaCross:           "Saltire Banner",
-	patternCross:              "Cross Banner",
-	patternUpperLeftTriangle:  "Per Bend Sinister Banner",
-	patternUpperRightTriangle: "Per Bend Banner",
-	patternLowerLeftTriangle:  "Per Bend Inverted Banner",
-	patternLowerRightTriangle: "Per Bend Sinister Inverted Banner",
-	patternLeftHalf:           "Per Pale Banner",
-	patternRightHalf:          "Per Pale Inverted Banner",
-	patternUpperHalf:          "Per Fess Banner",
-	patternLowerHalf:          "Per Fess Inverted Banner",
-	patternLowerLeftSquare:    "Base Dexter Canton Banner",
-	patternLowerRightSquare:   "Base Sinister Canton Banner",
-	patternUpperLeftSquare:    "Chief Dexter Canton Banner",
-	patternUpperRightSqaure:   "Chief Sinister Canton Banner",
-	patternLowerTriangle:      "Chevron Banner",
-	patternUpperTriangle:      "Inverted Chevron Banner",
-	patternLowerWaves:         "Base Indented Banner",
-	patternUpperWaves:         "Chief Indented Banner",
-	patternCircle:             "Roundel Banner",
-	patternDiamond:            "Lozenge Banner",
-	patternBorder:             "Bordure Banner",
-	patternWaveBorder:         "Borduer Indented Banner",
-	patternBricks:             "Field Masoned Banner",
-	patternGradientDown:       "Gradient Banner",
-	patternGradientUp:         "Base Gradient Banner",
-	patternCreeper:            "Creeper Charge Banner",
-	patternSkull:              "Skull Charge Banner",
-	patternFlower:             "Flower Charge Banner",
-	patternLogo:               "Mojang Charge Banner",
-	patternFull:               "Background",
+	PatternDiaCross:           "Saltire Banner",
+	PatternCross:              "Cross Banner",
+	PatternUpperLeftTriangle:  "Per Bend Sinister Banner",
+	PatternUpperRightTriangle: "Per Bend Banner",
+	PatternLowerLeftTriangle:  "Per Bend Inverted Banner",
+	PatternLowerRightTriangle: "Per Bend Sinister Inverted Banner",
+	PatternLeftHalf:           "Per Pale Banner",
+	PatternRightHalf:          "Per Pale Inverted Banner",
+	PatternUpperHalf:          "Per Fess Banner",
+	PatternLowerHalf:          "Per Fess Inverted Banner",
+	PatternLowerLeftSquare:    "Base Dexter Canton Banner",
+	PatternLowerRightSquare:   "Base Sinister Canton Banner",
+	PatternUpperLeftSquare:    "Chief Dexter Canton Banner",
+	PatternUpperRightSqaure:   "Chief Sinister Canton Banner",
+	PatternLowerTriangle:      "Chevron Banner",
+	PatternUpperTriangle:      "Inverted Chevron Banner",
+	PatternLowerWaves:         "Base Indented Banner",
+	PatternUpperWaves:         "Chief Indented Banner",
+	PatternCircle:             "Roundel Banner",
+	PatternDiamond:            "Lozenge Banner",
+	PatternBorder:             "Bordure Banner",
+	PatternWaveBorder:         "Borduer Indented Banner",
+	PatternBricks:             "Field Masoned Banner",
+	PatternGradientDown:       "Gradient Banner",
+	PatternGradientUp:         "Base Gradient Banner",
+	PatternCreeper:            "Creeper Charge Banner",
+	PatternSkull:              "Skull Charge Banner",
+	PatternFlower:             "Flower Charge Banner",
+	PatternLogo:               "Mojang Charge Banner",
+	PatternFull:               "Background",
 }
 
 type Pattern struct {
@@ -122,92 +122,92 @@ type Pattern struct {
 	color   int
 }
 
-func NewPattern(pattern, color int) (*Pattern, error) {
-	if (pattern < patternLowerThird) || (pattern > patternFull) {
-		return nil, errors.New(fmt.Sprintf("Invalid pattern ID: %d\n", pattern))
+func NewPattern(patId, Color int) (*Pattern, error) {
+	if (patId < PatternLowerThird) || (patId > PatternFull) {
+		return nil, errors.New(fmt.Sprintf("Invalid Pattern ID: %d\n", patId))
 	}
-	return &Pattern{pattern, color}, nil
+	return &Pattern{patId, Color}, nil
 }
 
-func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
-	switch pattern {
-	case patternLowerThird: // Base Fess Banner
-		svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, color)
-	case patternUpperThird: // Chief Fess Banner
-		svg.Box(0, 0, fullW, thirdH, color)
-	case patternLeftThird: // Pale Dexter Banner
-		svg.Box(0, 0, thirdW, fullH, color)
-	case patternRightThird: // Pale Sinister Banner
-		svg.Box(fullW-thirdW, 0, thirdW, fullH, color)
-	case patternCenterThird: // Pale Banner
-		svg.Box(halfW-(thirdW/2), 0, thirdW, fullH, color)
-	case patternHorizontalLine: // Fess Banner
-		svg.Box(0, halfH-1, fullW, thirdW/2, color)
-	case patternDiagonal1: // Bend Banner
-		svg.Line(0, 0, fullW, fullH, thirdW, color)
-	case patternDiagonal2: // Bend Sinister Banner
-		svg.Line(fullW, 0, 0, fullH, thirdW, color)
+func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
+	switch Pattern {
+	case PatternLowerThird: // Base Fess Banner
+		svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, Color)
+	case PatternUpperThird: // Chief Fess Banner
+		svg.Box(0, 0, fullW, thirdH, Color)
+	case PatternLeftThird: // Pale Dexter Banner
+		svg.Box(0, 0, thirdW, fullH, Color)
+	case PatternRightThird: // Pale Sinister Banner
+		svg.Box(fullW-thirdW, 0, thirdW, fullH, Color)
+	case PatternCenterThird: // Pale Banner
+		svg.Box(halfW-(thirdW/2), 0, thirdW, fullH, Color)
+	case PatternHorizontalLine: // Fess Banner
+		svg.Box(0, halfH-1, fullW, thirdW/2, Color)
+	case PatternDiagonal1: // Bend Banner
+		svg.Line(0, 0, fullW, fullH, thirdW, Color)
+	case PatternDiagonal2: // Bend Sinister Banner
+		svg.Line(fullW, 0, 0, fullH, thirdW, Color)
 	case patterStripes: // Paly Banner
 		for i := 0.15; i < 1.0; i += 0.25 {
 			x := int(float64(fullW) * i)
-			svg.Line(x, 0, x, fullH, sixthW, color)
+			svg.Line(x, 0, x, fullH, sixthW, Color)
 		}
-	case patternDiaCross: // Saltire Banner
-		svg.Line(0, 0, fullW, fullH, thirdW, color)
-		svg.Line(fullW, 0, 0, fullH, thirdW, color)
-	case patternCross: // Cross Banner
-		svg.Line(0, halfH, fullW, halfH, sixthW, color)
-		svg.Line(halfW, 0, halfW, fullH, sixthW, color)
-	case patternUpperLeftTriangle: // Per Bend Sinister Banner
-		svg.Triangle(0, 0, fullW, 0, 0, fullH, color)
-	case patternUpperRightTriangle: // Per Bend Banner
-		svg.Triangle(0, 0, fullW, 0, fullW, fullH, color)
-	case patternLowerLeftTriangle: // Per Bend Inverted Banner
-		svg.Triangle(0, fullH, 0, 0, fullW, fullH, color)
-	case patternLowerRightTriangle: // Per Bend Sinister Inverted Banner
-		svg.Triangle(0, fullH, fullW, 0, fullW, fullH, color)
-	case patternLeftHalf: // Per Pale Banner
-		svg.Box(0, 0, halfW, fullH, color)
-	case patternRightHalf: // Per Pale Inverted Banner
-		svg.Box(halfW, 0, halfW, fullH, color)
-	case patternUpperHalf: // Per Fess Banner
-		svg.Box(0, 0, fullW, halfH, color)
-	case patternLowerHalf: // Per Fess Inverted Banner
-		svg.Box(0, halfH, fullW, halfH, color)
-	case patternLowerLeftSquare: // Base Dexter Canton Banner
-		svg.Box(0, fullH-thirdH, halfW, thirdH, color)
-	case patternLowerRightSquare: // Base Sinister Canton Banner
-		svg.Box(halfW, fullH-thirdH, halfW, thirdH, color)
-	case patternUpperLeftSquare: // Chief Dexter Canton Banner
-		svg.Box(0, 0, halfW, thirdH, color)
-	case patternUpperRightSqaure: // Chief Sinister Canton Banner
-		svg.Box(halfW, 0, halfW, thirdH, color)
-	case patternLowerTriangle: // Chevron Banner
-		svg.Triangle(0, fullH, fullW, fullH, halfW, halfH, color)
-	case patternUpperTriangle: // Inverted Chevron Banner
-		svg.Triangle(0, 0, fullW, 0, halfW, halfH, color)
-	case patternLowerWaves: // Base Indented Banner
-		svg.Ellipse(sixthW, fullH, fifthW, thirdW, color)
-		svg.Ellipse(halfW, fullH, fifthW, thirdW, color)
-		svg.Ellipse(fullW-sixthW, fullH, fifthW, thirdW, color)
-	case patternUpperWaves: // Chief Indented Banner
-		svg.Ellipse(sixthW, 0, fifthW, thirdW, color)
-		svg.Ellipse(halfW, 0, fifthW, thirdW, color)
-		svg.Ellipse(fullW-sixthW, 0, fifthW, thirdW, color)
-	case patternCircle: // Roundel Banner
-		svg.Circle(halfW, halfH, thirdW, color)
-	case patternDiamond: // Lozenge Banner
+	case PatternDiaCross: // Saltire Banner
+		svg.Line(0, 0, fullW, fullH, thirdW, Color)
+		svg.Line(fullW, 0, 0, fullH, thirdW, Color)
+	case PatternCross: // Cross Banner
+		svg.Line(0, halfH, fullW, halfH, sixthW, Color)
+		svg.Line(halfW, 0, halfW, fullH, sixthW, Color)
+	case PatternUpperLeftTriangle: // Per Bend Sinister Banner
+		svg.Triangle(0, 0, fullW, 0, 0, fullH, Color)
+	case PatternUpperRightTriangle: // Per Bend Banner
+		svg.Triangle(0, 0, fullW, 0, fullW, fullH, Color)
+	case PatternLowerLeftTriangle: // Per Bend Inverted Banner
+		svg.Triangle(0, fullH, 0, 0, fullW, fullH, Color)
+	case PatternLowerRightTriangle: // Per Bend Sinister Inverted Banner
+		svg.Triangle(0, fullH, fullW, 0, fullW, fullH, Color)
+	case PatternLeftHalf: // Per Pale Banner
+		svg.Box(0, 0, halfW, fullH, Color)
+	case PatternRightHalf: // Per Pale Inverted Banner
+		svg.Box(halfW, 0, halfW, fullH, Color)
+	case PatternUpperHalf: // Per Fess Banner
+		svg.Box(0, 0, fullW, halfH, Color)
+	case PatternLowerHalf: // Per Fess Inverted Banner
+		svg.Box(0, halfH, fullW, halfH, Color)
+	case PatternLowerLeftSquare: // Base Dexter Canton Banner
+		svg.Box(0, fullH-thirdH, halfW, thirdH, Color)
+	case PatternLowerRightSquare: // Base Sinister Canton Banner
+		svg.Box(halfW, fullH-thirdH, halfW, thirdH, Color)
+	case PatternUpperLeftSquare: // Chief Dexter Canton Banner
+		svg.Box(0, 0, halfW, thirdH, Color)
+	case PatternUpperRightSqaure: // Chief Sinister Canton Banner
+		svg.Box(halfW, 0, halfW, thirdH, Color)
+	case PatternLowerTriangle: // Chevron Banner
+		svg.Triangle(0, fullH, fullW, fullH, halfW, halfH, Color)
+	case PatternUpperTriangle: // Inverted Chevron Banner
+		svg.Triangle(0, 0, fullW, 0, halfW, halfH, Color)
+	case PatternLowerWaves: // Base Indented Banner
+		svg.Ellipse(sixthW, fullH, fifthW, thirdW, Color)
+		svg.Ellipse(halfW, fullH, fifthW, thirdW, Color)
+		svg.Ellipse(fullW-sixthW, fullH, fifthW, thirdW, Color)
+	case PatternUpperWaves: // Chief Indented Banner
+		svg.Ellipse(sixthW, 0, fifthW, thirdW, Color)
+		svg.Ellipse(halfW, 0, fifthW, thirdW, Color)
+		svg.Ellipse(fullW-sixthW, 0, fifthW, thirdW, Color)
+	case PatternCircle: // Roundel Banner
+		svg.Circle(halfW, halfH, thirdW, Color)
+	case PatternDiamond: // Lozenge Banner
 		svg.Poly4(halfW, fifthH,
 			fullW-fifthW, halfH,
 			halfW, fullH-fifthH,
 			fifthW, halfH,
-			color)
-	case patternBorder: // Bordure Banner
-		svg.Line(0, 0, fullW, 0, sixthW, color)
-		svg.Line(fullW, 0, fullW, fullH, sixthW, color)
-		svg.Line(0, fullH, fullW, fullH, sixthW, color)
-		svg.Line(0, 0, 0, fullH, sixthW, color)
-	case patternWaveBorder: // Black/Dyed Borduer Indented Banner
+			Color)
+	case PatternBorder: // Bordure Banner
+		svg.Line(0, 0, fullW, 0, sixthW, Color)
+		svg.Line(fullW, 0, fullW, fullH, sixthW, Color)
+		svg.Line(0, fullH, fullW, fullH, sixthW, Color)
+		svg.Line(0, 0, 0, fullH, sixthW, Color)
+	case PatternWaveBorder: // Black/Dyed Borduer Indented Banner
 		br := halfH             // radius of circles in corners
 		ofs1 := fifthH          // offset away from the center, corner circles
 		brx := sixthH           // radius x of circles along the sides
@@ -215,22 +215,22 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 		ofs2 := sixthH / 3      // offset away from the center, side circles
 		bh := fullH/4 + fullH/8 // placement of circles along the sides
 		// corners
-		svg.Ellipse(0-ofs1, 0-ofs1, br, br, color)
-		svg.Ellipse(0-ofs1, fullH+ofs1, br, br, color)
-		svg.Ellipse(fullW+ofs1, 0-ofs1, br, br, color)
-		svg.Ellipse(fullW+ofs1, fullH+ofs1, br, br, color)
+		svg.Ellipse(0-ofs1, 0-ofs1, br, br, Color)
+		svg.Ellipse(0-ofs1, fullH+ofs1, br, br, Color)
+		svg.Ellipse(fullW+ofs1, 0-ofs1, br, br, Color)
+		svg.Ellipse(fullW+ofs1, fullH+ofs1, br, br, Color)
 		// sides
-		svg.Ellipse(0-ofs2, bh, brx, bry, color)
-		svg.Ellipse(0-ofs2, fullH-bh, brx, bry, color)
-		svg.Ellipse(fullW+ofs2, bh, brx, bry, color)
-		svg.Ellipse(fullW+ofs2, fullH-bh, brx, bry, color)
-	case patternBricks: // Black/Dyed Field Masoned Banner
+		svg.Ellipse(0-ofs2, bh, brx, bry, Color)
+		svg.Ellipse(0-ofs2, fullH-bh, brx, bry, Color)
+		svg.Ellipse(fullW+ofs2, bh, brx, bry, Color)
+		svg.Ellipse(fullW+ofs2, fullH-bh, brx, bry, Color)
+	case PatternBricks: // Black/Dyed Field Masoned Banner
 		brickW := fullW / 4
 		brickH := fullH / 13
 		ofs := 0
 		for y := 0; y < fullH; y += brickH + 1 {
 			for x := ofs; x < fullW; x += brickW + 1 {
-				svg.Box(x, y, brickW, brickH, color)
+				svg.Box(x, y, brickW, brickH, Color)
 			}
 			// Alternate the x offset for every row of bricks
 			if ofs == 0 {
@@ -239,10 +239,10 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 				ofs = 0
 			}
 		}
-	case patternGradientDown: // Gradient Banner
-		ur, _ := strconv.ParseUint(color[1:3], 16, 0)
-		ug, _ := strconv.ParseUint(color[3:5], 16, 0)
-		ub, _ := strconv.ParseUint(color[5:7], 16, 0)
+	case PatternGradientDown: // Gradient Banner
+		ur, _ := strconv.ParseUint(Color[1:3], 16, 0)
+		ug, _ := strconv.ParseUint(Color[3:5], 16, 0)
+		ub, _ := strconv.ParseUint(Color[5:7], 16, 0)
 		r := int(ur)
 		g := int(ug)
 		b := int(ub)
@@ -251,10 +251,10 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 			a = 1.0 - (float64(y) / float64(fullH))
 			svg.Box(0, y, fullW, 1, onthefly.ColorStringAlpha(r, g, b, a))
 		}
-	case patternGradientUp: // Base Gradient Banner
-		ur, _ := strconv.ParseUint(color[1:3], 16, 0)
-		ug, _ := strconv.ParseUint(color[3:5], 16, 0)
-		ub, _ := strconv.ParseUint(color[5:7], 16, 0)
+	case PatternGradientUp: // Base Gradient Banner
+		ur, _ := strconv.ParseUint(Color[1:3], 16, 0)
+		ug, _ := strconv.ParseUint(Color[3:5], 16, 0)
+		ub, _ := strconv.ParseUint(Color[5:7], 16, 0)
 		r := int(ur)
 		g := int(ug)
 		b := int(ub)
@@ -263,50 +263,50 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 			a = float64(y) / float64(fullH)
 			svg.Box(0, y, fullW, 1, onthefly.ColorStringAlpha(r, g, b, a))
 		}
-	case patternCreeper: // Black/Dyed Creeper Charge Banner
+	case PatternCreeper: // Black/Dyed Creeper Charge Banner
 		// eyes
-		svg.Box(sixthW-tenthW/2, thirdH-tenthH/2, halfW/2, halfW/2, color)
-		svg.Box(fullW-(sixthW+halfW/2)+tenthW/2, thirdH-tenthH/2, halfW/2, halfW/2, color)
+		svg.Box(sixthW-tenthW/2, thirdH-tenthH/2, halfW/2, halfW/2, Color)
+		svg.Box(fullW-(sixthW+halfW/2)+tenthW/2, thirdH-tenthH/2, halfW/2, halfW/2, Color)
 		// nose
-		svg.Line(halfW, thirdH+tenthH, halfW, halfH+(halfW/3), halfW/2, color)
+		svg.Line(halfW, thirdH+tenthH, halfW, halfH+(halfW/3), halfW/2, Color)
 		// whiskers
-		svg.Box(sixthW+sixthW, thirdH+fifthH, tenthW, halfW/2, color)
-		svg.Box(fullW-(sixthW+sixthW)-tenthW, thirdH+fifthH, tenthW, halfW/2, color)
-	case patternSkull: // Black/Dyed Skull Charge Banner
+		svg.Box(sixthW+sixthW, thirdH+fifthH, tenthW, halfW/2, Color)
+		svg.Box(fullW-(sixthW+sixthW)-tenthW, thirdH+fifthH, tenthW, halfW/2, Color)
+	case PatternSkull: // Black/Dyed Skull Charge Banner
 		hy := (tenthH / 2)
 		boxx := fifthW + (tenthW / 2)
 		boxy := halfH - sixthH
 
 		// Top of the head
-		svg.Box(boxx, boxy-hy, halfW, hy*2, color)
+		svg.Box(boxx, boxy-hy, halfW, hy*2, Color)
 
 		// Side of face
-		svg.Box(boxx, boxy+hy, hy, hy*2, color)
-		svg.Box(boxx+(halfW-hy), boxy+hy, hy, hy*2, color)
+		svg.Box(boxx, boxy+hy, hy, hy*2, Color)
+		svg.Box(boxx+(halfW-hy), boxy+hy, hy, hy*2, Color)
 
 		// Nose
-		svg.Box(boxx+(halfW-hy)/2, boxy+hy, hy, hy/2, color)
+		svg.Box(boxx+(halfW-hy)/2, boxy+hy, hy, hy/2, Color)
 
 		// Cheeks
-		svg.Box(boxx+(halfW-hy)/2-hy, boxy+hy+hy/2, hy, hy/2, color)
-		svg.Box(boxx+(halfW-hy)/2+hy, boxy+hy+hy/2, hy, hy/2, color)
+		svg.Box(boxx+(halfW-hy)/2-hy, boxy+hy+hy/2, hy, hy/2, Color)
+		svg.Box(boxx+(halfW-hy)/2+hy, boxy+hy+hy/2, hy, hy/2, Color)
 
 		// Bottom of face
-		svg.Box(boxx, boxy+hy*3-(hy/2), halfW, 1, color)
+		svg.Box(boxx, boxy+hy*3-(hy/2), halfW, 1, Color)
 
 		// The cross
 		ofs := thirdH // offset from bottom
-		svg.Line(sixthW, fullH-(sixthH+ofs), fullW-sixthW, fullH-ofs, tenthW, color)
-		svg.Line(fullW-sixthW, fullH-(sixthH+ofs), sixthW, fullH-ofs, tenthW, color)
+		svg.Line(sixthW, fullH-(sixthH+ofs), fullW-sixthW, fullH-ofs, tenthW, Color)
+		svg.Line(fullW-sixthW, fullH-(sixthH+ofs), sixthW, fullH-ofs, tenthW, Color)
 
 		// Ends of cross
-		svg.Circle(hy+hy/2, halfH+hy/2, hy/2, color)
-		svg.Circle(fullW-(hy+hy/2), halfH+hy/2, hy/2, color)
-		svg.Circle(hy+hy/2, halfH+hy*4-hy/2, hy/2, color)
-		svg.Circle(fullW-(hy+hy/2), halfH+hy*4-hy/2, hy/2, color)
+		svg.Circle(hy+hy/2, halfH+hy/2, hy/2, Color)
+		svg.Circle(fullW-(hy+hy/2), halfH+hy/2, hy/2, Color)
+		svg.Circle(hy+hy/2, halfH+hy*4-hy/2, hy/2, Color)
+		svg.Circle(fullW-(hy+hy/2), halfH+hy*4-hy/2, hy/2, Color)
 
-	case patternFlower: // Black/Dyed Flower Charge Banner
-		svg.Circle(halfW, halfH, sixthW, color)
+	case PatternFlower: // Black/Dyed Flower Charge Banner
+		svg.Circle(halfW, halfH, sixthW, Color)
 		numcircles := 10
 		step := (math.Pi * 2.0) / float64(numcircles)
 		radius := fullW / 20
@@ -320,7 +320,7 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 			// Draw outer circles
 			x := int(math.Floor(math.Cos(r)*spacing+0.5)) + halfW
 			y := int(math.Floor(math.Sin(r)*spacing+0.5)) + halfH
-			svg.Circle(x, y, radius, color)
+			svg.Circle(x, y, radius, Color)
 			// Draw circle made out of lines
 			oldx = linex
 			oldy = liney
@@ -330,13 +330,13 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 				firstx = linex
 				firsty = liney
 			} else {
-				svg.Line(oldx, oldy, linex, liney, linet, color)
-				svg.Circle(linex, liney, jointt, color)
+				svg.Line(oldx, oldy, linex, liney, linet, Color)
+				svg.Circle(linex, liney, jointt, Color)
 			}
 		}
-		svg.Line(linex, liney, firstx, firsty, linet, color)
-		svg.Circle(firstx, firsty, jointt, color)
-	case patternLogo: // Black/Dyed Mojang Charge Banner
+		svg.Line(linex, liney, firstx, firsty, linet, Color)
+		svg.Circle(firstx, firsty, jointt, Color)
+	case PatternLogo: // Black/Dyed Mojang Charge Banner
 		numsteps := 10
 		step := (math.Pi * 2.0) / float64(numsteps)
 		spacing := float64(thirdW)
@@ -351,22 +351,22 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 			linex = int(math.Floor(math.Cos(r)*spacing*0.8+0.5)) + halfW
 			liney = int(math.Floor(math.Sin(r)*spacing*0.8+0.5)) + halfH
 			if oldx == 0 {
-				svg.Line(linex, liney, fullW-fifthW, liney, linet, color)
+				svg.Line(linex, liney, fullW-fifthW, liney, linet, Color)
 			} else {
-				svg.Line(oldx, oldy, linex, liney, linet, color)
+				svg.Line(oldx, oldy, linex, liney, linet, Color)
 			}
 		}
-		svg.Line(linex, liney, fullW-fifthW, liney+fifthW, linet, color)
-		svg.Line(fullW-thirdW, thirdH, (fullW-thirdW)+tenthW, thirdH+tenthW, tenthW, color)
-	case patternFull:
-		svg.Box(0, 0, fullW, fullH, color)
+		svg.Line(linex, liney, fullW-fifthW, liney+fifthW, linet, Color)
+		svg.Line(fullW-thirdW, thirdH, (fullW-thirdW)+tenthW, thirdH+tenthW, tenthW, Color)
+	case PatternFull:
+		svg.Box(0, 0, fullW, fullH, Color)
 	}
 }
 
 func (p *Pattern) PatternString() string {
-	desc, ok := patternDesc[p.pattern]
+	desc, ok := PatternDesc[p.pattern]
 	if !ok {
-		return "Unknown pattern"
+		return "Unknown Pattern"
 	}
 	return desc
 }
@@ -374,39 +374,39 @@ func (p *Pattern) PatternString() string {
 // TODO: Switch the switch with a lookup like in PatternString
 func (p *Pattern) ColorString() string {
 	switch p.color {
-	case colorWhite:
+	case ColorWhite:
 		return "White"
-	case colorOrange:
+	case ColorOrange:
 		return "Orange"
-	case colorMagenta:
+	case ColorMagenta:
 		return "Magenta"
-	case colorLightBlue:
+	case ColorLightBlue:
 		return "LightBlue"
-	case colorYellow:
+	case ColorYellow:
 		return "Yellow"
-	case colorLime:
+	case ColorLime:
 		return "Lime"
-	case colorPink:
+	case ColorPink:
 		return "Pink"
-	case colorGray:
+	case ColorGray:
 		return "Gray"
-	case colorLightGray:
+	case ColorLightGray:
 		return "LightGray"
-	case colorCyan:
+	case ColorCyan:
 		return "Cyan"
-	case colorPurple:
+	case ColorPurple:
 		return "Purple"
-	case colorBlue:
+	case ColorBlue:
 		return "Blue"
-	case colorBrown:
+	case ColorBrown:
 		return "Brown"
-	case colorGreen:
+	case ColorGreen:
 		return "Green"
-	case colorRed:
+	case ColorRed:
 		return "Red"
-	case colorBlack:
+	case ColorBlack:
 		return "Black"
-	case colorBrightWhite:
+	case ColorBrightWhite:
 		return "Custom color"
 	default:
 		return "Unknown color"
