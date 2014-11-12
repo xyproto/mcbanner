@@ -75,6 +75,48 @@ const (
 	colorBrightWhite
 )
 
+var patternDesc = map[int]string{
+	patternLowerThird:         "Base Fess Banner",
+	patternUpperThird:         "Chief Fess Banner",
+	patternLeftThird:          "Pale Dexter Banner",
+	patternRightThird:         "Pale Sinister Banner",
+	patternCenterThird:        "Pale Banner",
+	patternHorizontalLine:     "Fess Banner",
+	patternDiagonal1:          "Bend Banner",
+	patternDiagonal2:          "Bend Sinister Banner",
+	patterStripes:             "Paly Banner",
+	patternDiaCross:           "Saltire Banner",
+	patternCross:              "Cross Banner",
+	patternUpperLeftTriangle:  "Per Bend Sinister Banner",
+	patternUpperRightTriangle: "Per Bend Banner",
+	patternLowerLeftTriangle:  "Per Bend Inverted Banner",
+	patternLowerRightTriangle: "Per Bend Sinister Inverted Banner",
+	patternLeftHalf:           "Per Pale Banner",
+	patternRightHalf:          "Per Pale Inverted Banner",
+	patternUpperHalf:          "Per Fess Banner",
+	patternLowerHalf:          "Per Fess Inverted Banner",
+	patternLowerLeftSquare:    "Base Dexter Canton Banner",
+	patternLowerRightSquare:   "Base Sinister Canton Banner",
+	patternUpperLeftSquare:    "Chief Dexter Canton Banner",
+	patternUpperRightSqaure:   "Chief Sinister Canton Banner",
+	patternLowerTriangle:      "Chevron Banner",
+	patternUpperTriangle:      "Inverted Chevron Banner",
+	patternLowerWaves:         "Base Indented Banner",
+	patternUpperWaves:         "Chief Indented Banner",
+	patternCircle:             "Roundel Banner",
+	patternDiamond:            "Lozenge Banner",
+	patternBorder:             "Bordure Banner",
+	patternWaveBorder:         "Borduer Indented Banner",
+	patternBricks:             "Field Masoned Banner",
+	patternGradientDown:       "Gradient Banner",
+	patternGradientUp:         "Base Gradient Banner",
+	patternCreeper:            "Creeper Charge Banner",
+	patternSkull:              "Skull Charge Banner",
+	patternFlower:             "Flower Charge Banner",
+	patternLogo:               "Mojang Charge Banner",
+	patternFull:               "Background",
+}
+
 type Pattern struct {
 	pattern int
 	color   int
@@ -322,88 +364,11 @@ func DrawPattern(svg *onthefly.Tag, pattern int, color string) {
 }
 
 func (p *Pattern) PatternString() string {
-	switch p.pattern {
-	case patternLowerThird:
-		return "Base Fess Banner"
-	case patternUpperThird:
-		return "Chief Fess Banner"
-	case patternLeftThird:
-		return "Pale Dexter Banner"
-	case patternRightThird:
-		return "Pale Sinister Banner"
-	case patternCenterThird:
-		return "Pale Banner"
-	case patternHorizontalLine:
-		return "Fess Banner"
-	case patternDiagonal1:
-		return "Bend Banner"
-	case patternDiagonal2:
-		return "Bend Sinister Banner"
-	case patterStripes:
-		return "Paly Banner"
-	case patternDiaCross:
-		return "Saltire Banner"
-	case patternCross:
-		return "Cross Banner"
-	case patternUpperLeftTriangle:
-		return "Per Bend Sinister Banner"
-	case patternUpperRightTriangle:
-		return "Per Bend Banner"
-	case patternLowerLeftTriangle:
-		return "Per Bend Inverted Banner"
-	case patternLowerRightTriangle:
-		return "Per Bend Sinister Inverted Banner"
-	case patternLeftHalf:
-		return "Per Pale Banner"
-	case patternRightHalf:
-		return "Per Pale Inverted Banner"
-	case patternUpperHalf:
-		return "Per Fess Banner"
-	case patternLowerHalf:
-		return "Per Fess Inverted Banner"
-	case patternLowerLeftSquare:
-		return "Base Dexter Canton Banner"
-	case patternLowerRightSquare:
-		return "Base Sinister Canton Banner"
-	case patternUpperLeftSquare:
-		return "Chief Dexter Canton Banner"
-	case patternUpperRightSqaure:
-		return "Chief Sinister Canton Banner"
-	case patternLowerTriangle:
-		return "Chevron Banner"
-	case patternUpperTriangle:
-		return "Inverted Chevron Banner"
-	case patternLowerWaves:
-		return "Base Indented Banner"
-	case patternUpperWaves:
-		return "Chief Indented Banner"
-	case patternCircle:
-		return "Roundel Banner"
-	case patternDiamond:
-		return "Lozenge Banner"
-	case patternBorder:
-		return "Bordure Banner"
-	case patternWaveBorder:
-		return "Black/Dyed Borduer Indented Banner"
-	case patternBricks:
-		return "Black/Dyed Field Masoned Banner"
-	case patternGradientDown:
-		return "Gradient Banner"
-	case patternGradientUp:
-		return "Base Gradient Banner"
-	case patternCreeper:
-		return "Black/Dyed Creeper Charge Banner"
-	case patternSkull:
-		return "Black/Dyed Skull Charge Banner"
-	case patternFlower:
-		return "Black/Dyed Flower Charge Banner"
-	case patternLogo:
-		return "Black/Dyed Mojang Charge Banner"
-	case patternFull:
-		return "Background"
-	default:
+	desc, ok := patternDesc[p.pattern]
+	if !ok {
 		return "Unknown pattern"
 	}
+	return desc
 }
 
 func (p *Pattern) ColorString() string {

@@ -55,9 +55,30 @@ func (b *Banner) Draw(svg *onthefly.Tag) {
 
 // Generate a new SVG Page for a banner
 func (b *Banner) SVGpage() *onthefly.Page {
+	if b == nil {
+		log.Fatalln("Can't generate SVG for a *Banner that is nil!")
+	}
 	page, svg := onthefly.NewTinySVG(0, 0, bannerW, bannerH)
 	desc := svg.AddNewTag("desc")
 	desc.AddContent("A banner")
 	b.Draw(svg)
 	return page
+}
+
+func newRandomBanner() (b *Banner, how []*Pattern) {
+	// Generate new banner
+	b = NewBanner()
+	how = []*Pattern{}
+	p, _ := NewPattern(patternFull, randomColor())
+	b.AddPattern(p)
+	how = append(how, p)
+
+	// Up to 6 different patterns
+	for i := 0; i < maxPatterns; i++ {
+		p, _ = NewPattern(randomPattern(), randomColor())
+		b.AddPattern(p)
+		how = append(how, p)
+	}
+
+	return b, how
 }

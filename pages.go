@@ -13,7 +13,60 @@ const (
 )
 
 // TODO: This works as long as there are not too many users. Fix.
-var b *Banner
+var gB *Banner
+var gHow []string
+
+func mainPage(mux *http.ServeMux, path string, r *render.Render) {
+	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
+		data := map[string]string{
+			"title": version_string,
+		}
+
+		// TODO: Enable this if a development environment variable is on
+		// Reload template (great for development)
+		//r = render.New(render.Options{})
+
+		// Render and return
+		r.HTML(w, http.StatusOK, "index", data)
+	})
+}
+
+func comparison(mux *http.ServeMux, path string, r *render.Render) {
+	svgurl := "/img/a.svg"
+	pngurl := "/img/a.png"
+
+	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
+		bw := strconv.Itoa(bannerW) + "px"
+		bh := strconv.Itoa(bannerH) + "px"
+
+		data := map[string]string{
+			"title":        "Comparison",
+			"likeness":     "22%",
+			"bannerWidth":  bw,
+			"bannerHeight": bh,
+			"svg":          svgurl,
+			"png":          pngurl,
+		}
+
+		// TODO: Enable this only if a development environment variable is on
+		// Reload template (great for development)
+		r = render.New(render.Options{})
+
+		// Render and return
+		r.HTML(w, http.StatusOK, "comparison", data)
+	})
+	b, _ := newRandomBanner()
+	svgxml := b.SVGpage().String()
+	pngbytes := Render(svgxml)
+	mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Add("Content-Type", "image/svg+xml")
+		fmt.Fprint(w, svgxml)
+	})
+	mux.HandleFunc(pngurl, func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Add("Content-Type", "image/png")
+		fmt.Fprint(w, pngbytes)
+	})
+}
 
 // Generate a new onthefly Page (HTML5 and CSS combined)
 func patternGalleryPage(title string, svgurls, captions []string) *onthefly.Page {
@@ -119,24 +172,7 @@ func patternGallery(mux *http.ServeMux, path string) {
 	page.Publish(mux, path, "/css/banner.css", false)
 }
 
-func mainPage(mux *http.ServeMux, path string, r *render.Render) {
-	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
-		data := map[string]string{
-			"title": version_string,
-		}
-
-		// TODO: Enable this if a development environment variable is on
-		// Reload template (great for development)
-		//r = render.New(render.Options{})
-
-		// Render and return
-		r.HTML(w, http.StatusOK, "index", data)
-	})
-}
-
 func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
-	seed()
-
 	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
 		bw := strconv.Itoa(bannerW*zoomFactor) + "px"
 		bh := strconv.Itoa(bannerH*zoomFactor) + "px"
@@ -145,18 +181,15 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 		//r = render.New(render.Options{})
 
 		// The recipe
+
+		seed()
+
+		var howP []*Pattern
+		gB, howP = newRandomBanner()
+
+		// how is a list of pattern.String() based on howP
 		how := []string{}
-
-		// Generate new banner
-		b = NewBanner()
-		p, _ := NewPattern(patternFull, randomColor())
-		b.AddPattern(p)
-		how = append(how, p.String())
-
-		// Up to 6 different patterns
-		for i := 0; i < maxPatterns; i++ {
-			p, _ = NewPattern(randomPattern(), randomColor())
-			b.AddPattern(p)
+		for _, p := range howP {
 			how = append(how, p.String())
 		}
 
@@ -175,6 +208,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 	// TODO: One url per generated banner. /img/generated/123/123/result.svg
 	mux.HandleFunc("/img/random.svg", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
+		b, _ := newRandomBanner()
 		fmt.Fprint(w, b.SVGpage().String())
 	})
 

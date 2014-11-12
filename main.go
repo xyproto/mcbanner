@@ -27,9 +27,12 @@ func main() {
 	// Publish the random banner page
 	randomBanner(mux, "/random", r)
 
+	// Publish the svg->pixel vs png->pixel comparison page
+	comparison(mux, "/comparison", r)
+
 	// Handler goes last
 	n.UseHandler(mux)
 
-	// Listen for requests at port 3000
-	n.Run(":3000")
+	// Listen for requests
+	n.Run(":3020")
 }

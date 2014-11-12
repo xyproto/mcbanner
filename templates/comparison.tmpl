@@ -12,7 +12,7 @@
       margin: 5em;
       font-family: 'Lato', sans-serif;
       font-weight: 300;
-      background: #e0e0e0;
+      background: #f0f0f0;
     }
     a {
       text-decoration: none;
@@ -42,14 +42,20 @@
       padding: 0.1em;
       background: #202020;
     }
+    img {
+      /* border: 8px solid black; */
+      width: {{.bannerWidth}};
+      height: {{.bannerHeight}};
+    }
   </style>
 </head>
 <body>
   <!-- Alexander F Rødseth, 2014 -->
   <div id="lbl">{{.title}}</div>
-  <a href="/patterns"><div id="opt">Pattern gallery</div></a>
-  <a href="/random"><div id="opt">Random banner</div></a>
-  <a href="/comparison"><div id="opt">SVG/PNG comparison</div></a>
-  <a href="http://minecraft.gamepedia.com/Banner"><div id="opt">Banner reference [Minecraft Wiki]</div></a>
+  <img src="{{.svg}}" alt="Random banner">
+  <img src="{{.png}}" alt="PNG">
+  <p>
+    Likness percentage: {{.likeness}}
+  </p>
 </body>
 </html>
