@@ -54,8 +54,8 @@ func (b *Banner) Draw(svg *onthefly.Tag) {
 	}
 }
 
-// Generate a new SVG Page for a banner
-func (b *Banner) SVGpage() *onthefly.Page {
+// Generate a new Page for a banner, containing svg
+func (b *Banner) Page() *onthefly.Page {
 	if b == nil {
 		log.Fatalln("Can't generate SVG for a *Banner that is nil!")
 	}
@@ -67,20 +67,24 @@ func (b *Banner) SVGpage() *onthefly.Page {
 }
 
 func (b *Banner) SVG() string {
-	return b.SVGpage().String()
+	return b.Page().String()
+}
+
+// Use ImageMagick to convert bytes from one file format to another
+func Convert(imagebytes []byte, fromformat, toformat string) []byte {
+	img, err := magick.NewFromBlob(imagebytes, fromformat)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	imagebytesOut, err := img.ToBlob(toformat)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	return imagebytesOut
 }
 
 func (b *Banner) PNG() []byte {
-	svgxml := []byte(b.SVG())
-	img, err := magick.NewFromBlob(svgxml, "svg")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	pngbytes, err := img.ToBlob("png")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	return pngbytes
+	return Convert([]byte(b.SVG()), "svg", "png")
 }
 
 func NewRandomBanner() (b *Banner, how []*Pattern) {

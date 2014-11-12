@@ -1,10 +1,10 @@
 #!/bin/sh
 export PORT=3000
 SOURCE=
-for f in *.go; do
+for f in *.go ../*.go; do
   SOURCE+="$f "
 done
-BIN=mcbanner
+BIN=web
 PIDFILE=/tmp/$BIN.pid
 LOG=errors.err
 M5=nop

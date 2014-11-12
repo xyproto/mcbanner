@@ -26,3 +26,5 @@ _testmain.go
 mcbanner
 .nfs*
 *~
+
+web/web

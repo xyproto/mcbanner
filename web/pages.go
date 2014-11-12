@@ -5,6 +5,8 @@ import (
 	"github.com/unrolled/render"
 	"github.com/xyproto/mcbanner"
 	"github.com/xyproto/onthefly"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -33,20 +35,38 @@ func mainPage(mux *http.ServeMux, path string, r *render.Render) {
 }
 
 func comparison(mux *http.ServeMux, path string, r *render.Render) {
-	svgurl := "/img/a.svg"
-	pngurl := "/img/a.png"
+	mcbanner.Seed()
+
+	svgurl1 := "/img/a.svg"
+	pngurl1 := "/img/a.png"
+	pngurl2 := "/img/c1.png"
+	pngbytes2, err := ioutil.ReadFile("public" + pngurl2)
+	if err != nil {
+		log.Fatalln("Could not read: " + "public" + pngurl2)
+	}
+
+	b, _ := mcbanner.NewRandomBanner()
+	svgxml1 := b.SVG()
+	pngbytes1 := b.PNG()
+	likeness := Equality(pngbytes1, pngbytes2)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, req *http.Request) {
+		b, _ = mcbanner.NewRandomBanner()
+		svgxml1 = b.SVG()
+		pngbytes1 = b.PNG()
+		likeness = Equality(pngbytes1, pngbytes2)
+
 		bw := strconv.Itoa(mcbanner.BannerW) + "px"
 		bh := strconv.Itoa(mcbanner.BannerH) + "px"
 
 		data := map[string]string{
 			"title":        "Comparison",
-			"likeness":     "22%",
+			"likeness":     fmt.Sprintf("%.0f%%", likeness*100.0),
 			"bannerWidth":  bw,
 			"bannerHeight": bh,
-			"svg":          svgurl,
-			"png":          pngurl,
+			"svg":          svgurl1,
+			"png1":         pngurl1,
+			"png2":         pngurl2,
 		}
 
 		// TODO: Enable this only if a development environment variable is on
@@ -56,18 +76,19 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 		// Render and return
 		r.HTML(w, http.StatusOK, "comparison", data)
 	})
-	b, _ := mcbanner.NewRandomBanner()
-	svgxml := b.SVGpage().String()
-	pngbytes := mcbanner.Render(svgxml)
-	mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
+	mux.HandleFunc(svgurl1, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
-		fmt.Fprint(w, svgxml)
+		fmt.Fprint(w, svgxml1)
 	})
-	mux.HandleFunc(pngurl, func(w http.ResponseWriter, req *http.Request) {
+	//mux.HandleFunc(pngurl1, func(w http.ResponseWriter, req *http.Request) {
+	//	w.Header().Add("Content-Type", "image/png")
+	//	w.Write(pngbytes1)
+	//})
+	mux.HandleFunc(pngurl2, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/png")
-		w.Write(pngbytes)
-		//fmt.Fprint(w, pngbytes)
+		w.Write(pngbytes2)
 	})
+
 }
 
 // Generate a new onthefly Page (HTML5 and CSS combined)
@@ -155,13 +176,13 @@ func patternGallery(mux *http.ServeMux, path string) {
 		p, _ = mcbanner.NewPattern(i, mcbanner.ColorRed)
 		b.AddPattern(p)
 
-		svgString := b.SVGpage().String()
+		svgxml := b.SVG()
 
 		// Publish the generated SVG as "/img/banner_NNN.svg"
 		svgurl := fmt.Sprintf("/img/banner_%d.svg", i)
 		mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
 			w.Header().Add("Content-Type", "image/svg+xml")
-			fmt.Fprint(w, svgString)
+			fmt.Fprint(w, svgxml)
 		})
 
 		svgurls = append(svgurls, svgurl)
@@ -211,7 +232,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 	mux.HandleFunc("/img/random.svg", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
 		b, _ := mcbanner.NewRandomBanner()
-		fmt.Fprint(w, b.SVGpage().String())
+		fmt.Fprint(w, b.SVG())
 	})
 
 }
