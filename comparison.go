@@ -1,4 +1,4 @@
-package main
+package mcbanner
 
 import "github.com/gographics/imagick/imagick"
 

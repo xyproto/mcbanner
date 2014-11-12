@@ -1,4 +1,4 @@
-package main
+package mcbanner
 
 import (
 	"errors"
@@ -371,6 +371,7 @@ func (p *Pattern) PatternString() string {
 	return desc
 }
 
+// TODO: Switch the switch with a lookup like in PatternString
 func (p *Pattern) ColorString() string {
 	switch p.color {
 	case colorWhite:

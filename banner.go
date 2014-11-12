@@ -1,4 +1,4 @@
-package main
+package mcbanner
 
 import (
 	"github.com/xyproto/onthefly"
@@ -65,7 +65,7 @@ func (b *Banner) SVGpage() *onthefly.Page {
 	return page
 }
 
-func newRandomBanner() (b *Banner, how []*Pattern) {
+func NewRandomBanner() (b *Banner, how []*Pattern) {
 	// Generate new banner
 	b = NewBanner()
 	how = []*Pattern{}

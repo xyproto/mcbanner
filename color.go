@@ -1,4 +1,4 @@
-package main
+package mcbanner
 
 var (
 	colors = map[int]string{
