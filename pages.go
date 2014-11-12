@@ -64,7 +64,8 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 	})
 	mux.HandleFunc(pngurl, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/png")
-		fmt.Fprint(w, pngbytes)
+		w.Write(pngbytes)
+		//fmt.Fprint(w, pngbytes)
 	})
 }
 
