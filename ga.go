@@ -10,170 +10,66 @@ import (
 )
 
 const (
-	MAXGENERATIONS uint    = 300
+	MAXGENERATIONS = 300
 )
 
-/* A solution is up to 6 Patterns */
+// This is what every solution is being compared against
+var target_png_bytes []byte;
+
+// A solution is up to maxPatterns Patterns
 type Solution []Pattern
 
-/* A population is a collection of solutions */
+// A population is a collection of solutions
 type Population []Solution
 
+// For storing the population fitnesses before sorting
 type PopulationFitness []float64
 
 func NewPopulationFitness(popsize uint) PopulationFitness {
 	return make(PopulationFitness, popsize)
 }
 
-func NewSolution(numpatterns uint) Solution {
-	return make([]Pattern, numpatterns)
+func NewSolution() Solution {
+	return make([]Pattern, maxPatterns)
 }
 
-func NewRandomSolution(numpatterns uint, maxboardpos BoardPosIndex) Solution {
-	sol := NewSolution(numpatterns)
-	var i uint
-	for i = 0; i < numpatterns; i++ {
-		sol.set(i, FreePosIndex(rand.Intn(int(maxboardpos))))
+func NewRandomSolution() Solution {
+	sol := NewSolution()
+	for i := 0; i < len(sol); i++ {
+		sol[i] = randomPattern()
 	}
 	return sol
 }
 
-func pos2xy(pos BoardPosIndex) *Position {
-	var i BoardPosIndex = 0
-	var p Position
-	for p.y = 0; p.y < BOARDSIZE; p.y++ {
-		for p.x = 0; p.x < BOARDSIZE; p.x++ {
-			if i == pos {
-				return &Position{p.x, p.y}
-			}
-			i++
-		}
-	}
-	return &Position{255, 255}
-}
-
-/* Place a queen at the Nth free position on the board
- * Returns the board position as an index and possibly an error
- */
-func (b *Board) place(targetpos FreePosIndex) (BoardPosIndex, error) {
-	var freepos FreePosIndex
-	var usepos BoardPosIndex
-
-	width := b.width
-	height := width
-	maxx := width - 1
-
-	for usepos = 0; usepos < BoardPosIndex(width*width); usepos++ {
-		if (targetpos == freepos) && (b.data[usepos] == FREE) {
-			// Mark the row, column and the two diagonals too
-			o := pos2xy(usepos)
-			//fmt.Println("xy", o.x, o.y)
-			var x, y uint
-			for y = 0; y < height; y++ {
-				for x = 0; x < width; x++ {
-					/* Mark horizontal and vertical lines as COVERED */
-					if o.x == x || o.y == y {
-						b.data[y*width+x] = COVERED
-					}
-					/* Mark diagonal lines from upper left to lower right as COVERED */
-					if x == y {
-						diagx := (x + o.x) - o.y
-						diagy := y
-						if (diagx >= 0 && diagy >= 0) && (diagx < width && diagy < height) {
-							b.data[diagy*width+diagx] = COVERED
-						}
-					}
-					/* Mark diagonal lines from upper right to lower left as COVERED */
-					if (maxx - x) == y {
-						diagx := (x - (maxx - o.x)) + o.y
-						diagy := (y + o.y) - o.y
-						if (diagx >= 0 && diagy >= 0) && (diagx < BOARDSIZE && diagy < height) {
-							b.data[diagy*width+diagx] = COVERED
-						}
-					}
-
-				}
-			}
-			// Mark the queen
-			b.data[usepos] = QUEEN
-			return usepos, nil
-		}
-		if b.data[usepos] == FREE {
-			freepos++
-		}
-	}
-	return 0, errors.New("No available position")
-}
-
-func (sol *Solution) generateBoard() (*Board, uint) {
-	board := NewBoard(BOARDSIZE)
-	var queenCounter uint
-	for _, queenposindex := range *sol {
-		if _, err := board.place(queenposindex); err == nil {
-			// Could place queen, increase queenCounter
-			queenCounter++
-		}
-	}
-	return board, queenCounter
-}
-
-func (b *Board) String() string {
-	var (
-		s string
-		t PosType
-		y uint
-		x uint
-	)
-	width := b.width
-	height := width
-	for y = 0; y < height; y++ {
-		for x = 0; x < width; x++ {
-			t = b.data[y*width+x]
-			if t == FREE {
-				s += " "
-			} else if t == QUEEN {
-				s += "q"
-			} else if t == COVERED {
-				s += "."
-			}
-		}
-		s += "\n"
-	}
-	return s + "\n"
-}
-
 func (sol Solution) String() string {
-	board, _ := sol.generateBoard()
-	return board.String()
+	return fmt.Sprintf("%v", sol)
 }
 
-func (sol Solution) set(i uint, freepos FreePosIndex) {
-	sol[i] = freepos
+func (sol *Solution) Banner() *Banner {
+	b := NewBanner()
+	for i := 0; i < len(sol); i++ {
+		b.AddPattern(&sol[i])
+	}
+	return b
 }
 
 func (sol *Solution) fitness() float64 {
-	_, numpatterns := sol.generateBoard()
-	return float64(numpatterns) / float64(QUEENS)
+	return Compare(sol.Banner(), sol.target_png_bytes)
 }
 
-func NewPopulation(size uint) Population {
-	t := time.Now()
-	rand.Seed(t.UnixNano())
+func NewPopulation(size int) Population {
+	Seed()
 	pop := make([]Solution, size)
-	var i uint
-	for i = 0; i < size; i++ {
-		pop[i] = NewRandomSolution(QUEENS, BoardPosIndex(BOARDSIZE*BOARDSIZE))
+	for i := 0; i < size; i++ {
+		pop[i] = NewRandomSolution()
 	}
 	return pop
 }
 
 func test_solution() {
-	sol := NewSolution(QUEENS)
-	sol.set(0, 20)
-	sol.set(1, 2)
-	sol.set(2, 2)
+	sol := NewSolution()
 	fmt.Println(sol)
-	//fmt.Println("fitness:", sol.fitness())
+	fmt.Println("fitness:", sol.fitness())
 }
 
 func crossover(a, b Solution, point uint, numpatterns uint) Solution {
