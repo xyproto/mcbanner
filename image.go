@@ -82,4 +82,3 @@ func Compare(b *Banner, pngbytes []byte) float64 {
 	b_pngbytes := b.PNG()
 	return Likeness(b_pngbytes, pngbytes)
 }
-

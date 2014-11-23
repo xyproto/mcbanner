@@ -19,3 +19,10 @@ func randomColor() int {
 	// colorWhite is the first constant, colorBlack is the last one
 	return ColorWhite + rand.Intn((ColorBlack-ColorWhite)+1)
 }
+
+func NewRandomPattern() Pattern {
+	// error is only returned if the values are invalid
+	// randomPattern and randomColor only returns valid values, so the error can be ignored
+	pat, _ := NewPattern(randomPattern(), randomColor())
+	return *pat
+}

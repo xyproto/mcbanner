@@ -3,18 +3,17 @@ package mcbanner
 // Genetic algorithm
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 const (
 	MAXGENERATIONS = 300
+	POPSIZE        = 50
 )
 
 // This is what every solution is being compared against
-var target_png_bytes []byte;
+var target_png_bytes []byte
 
 // A solution is up to maxPatterns Patterns
 type Solution []Pattern
@@ -25,7 +24,7 @@ type Population []Solution
 // For storing the population fitnesses before sorting
 type PopulationFitness []float64
 
-func NewPopulationFitness(popsize uint) PopulationFitness {
+func NewPopulationFitness(popsize int) PopulationFitness {
 	return make(PopulationFitness, popsize)
 }
 
@@ -36,7 +35,7 @@ func NewSolution() Solution {
 func NewRandomSolution() Solution {
 	sol := NewSolution()
 	for i := 0; i < len(sol); i++ {
-		sol[i] = randomPattern()
+		sol[i] = NewRandomPattern()
 	}
 	return sol
 }
@@ -45,7 +44,7 @@ func (sol Solution) String() string {
 	return fmt.Sprintf("%v", sol)
 }
 
-func (sol *Solution) Banner() *Banner {
+func (sol Solution) Banner() *Banner {
 	b := NewBanner()
 	for i := 0; i < len(sol); i++ {
 		b.AddPattern(&sol[i])
@@ -53,8 +52,8 @@ func (sol *Solution) Banner() *Banner {
 	return b
 }
 
-func (sol *Solution) fitness() float64 {
-	return Compare(sol.Banner(), sol.target_png_bytes)
+func (sol Solution) fitness() float64 {
+	return Compare(sol.Banner(), target_png_bytes)
 }
 
 func NewPopulation(size int) Population {
@@ -72,21 +71,21 @@ func test_solution() {
 	fmt.Println("fitness:", sol.fitness())
 }
 
-func crossover(a, b Solution, point uint, numpatterns uint) Solution {
-	c := NewSolution(numpatterns)
+func crossover(a, b Solution, point uint) Solution {
+	c := NewSolution()
 	var i uint
 	for i = 0; i < point; i++ {
 		c[i] = a[i]
 	}
-	for i = point; i < numpatterns; i++ {
+	for i = point; i < maxPatterns; i++ {
 		c[i] = b[i]
 	}
 	return c
 }
 
-func (sol Solution) mutate(numpatterns uint) {
-	randpos := rand.Intn(int(numpatterns))
-	sol[randpos] = FreePosIndex(rand.Intn(int(maxboardpos)))
+func (sol Solution) mutate() {
+	randpos := rand.Intn(maxPatterns)
+	sol[randpos] = NewRandomPattern()
 }
 
 func sum(scores []float64) float64 {
@@ -97,12 +96,15 @@ func sum(scores []float64) float64 {
 	return total
 }
 
-func FindBest(fitnessfunction func (int) int) {
-	bestfitnessindex := 0
-	var popsize uint = POPSIZE
-	pop := NewPopulation(popsize)
-	var generation uint
-	var average float64
+func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
+	target_png_bytes = png_bytes
+	var (
+		bestfitnessindex     = 0
+		popsize          int = POPSIZE
+		pop                  = NewPopulation(popsize)
+		generation       int
+		average          float64
+	)
 	for generation = 0; generation < MAXGENERATIONS; generation++ {
 		fmt.Println("Generation", generation)
 		fit := NewPopulationFitness(popsize)
@@ -114,8 +116,9 @@ func FindBest(fitnessfunction func (int) int) {
 		fmt.Println("total =", total)
 		average = total / float64(popsize)
 		fmt.Println("average =", average)
-		var bestfitness float64 = 0.0
-		var nextbestfitness float64 = 0.0
+		var (
+			bestfitness, nextbestfitness float64
+		)
 		nextbestfitnessindex := 0
 		for i, _ := range fit {
 			if fit[i] >= bestfitness {
@@ -131,21 +134,23 @@ func FindBest(fitnessfunction func (int) int) {
 			fmt.Println("Found fitness 1")
 			break
 		}
-		var mutrate float64 = 0.0
-		var crossrate float64 = 0.1
-		var newpoprate float64 = 0.0
+		var (
+			mutrate    float64 = 0.0
+			crossrate  float64 = 0.1
+			newpoprate float64 = 0.0
+		)
 		for i, _ := range pop {
 			fitness := fit[i]
 			if average > 0.7 && fitness < 0.5 {
-				pop[i] = NewSolution(QUEENS)
+				pop[i] = NewSolution()
 			} else if average > 0.8 && fitness < 0.6 {
-				pop[i] = NewSolution(QUEENS)
+				pop[i] = NewSolution()
 			} else if average > 0.9 && fitness < 0.7 {
-				pop[i] = NewSolution(QUEENS)
+				pop[i] = NewSolution()
 			} else if fitness < (average * 0.3) {
 				// 50% chance of being replaced with randomness
 				if rand.Float64() <= 0.5 {
-					pop[i] = NewSolution(QUEENS)
+					pop[i] = NewSolution()
 				}
 			}
 			if bestfitness > average {
@@ -172,16 +177,16 @@ func FindBest(fitnessfunction func (int) int) {
 			}
 			// A certain chance for mutation
 			if rand.Float64() <= mutrate {
-				pop[rand.Intn(int(popsize))].mutate(QUEENS, BoardPosIndex(BOARDSIZE*BOARDSIZE))
+				pop[rand.Intn(int(popsize))].mutate()
 			}
 			// A certain chance for crossover
 			if rand.Float64() <= crossrate {
-				crossoverpoint := uint(rand.Intn(int(QUEENS)))
-				pop[i] = crossover(pop[bestfitnessindex], pop[nextbestfitnessindex], crossoverpoint, QUEENS)
+				crossoverpoint := uint(rand.Intn(maxPatterns))
+				pop[i] = crossover(pop[bestfitnessindex], pop[nextbestfitnessindex], crossoverpoint)
 			}
 			// A certain chance for new random variations
 			if rand.Float64() <= newpoprate {
-				pop[i] = NewSolution(QUEENS)
+				pop[i] = NewSolution()
 			}
 		}
 	}
