@@ -1,6 +1,7 @@
 package mcbanner
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 )
@@ -18,4 +19,8 @@ func TestGA(t *testing.T) {
 	//}
 }
 
-
+func TestFitness(t *testing.T) {
+	sol := NewSolution()
+	fmt.Println(sol)
+	fmt.Println("fitness:", sol.fitness())
+}

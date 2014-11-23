@@ -1,6 +1,7 @@
 package mcbanner
 
 import (
+	"log"
 	"math/rand"
 	"time"
 )
@@ -23,6 +24,9 @@ func randomColor() int {
 func NewRandomPattern() Pattern {
 	// error is only returned if the values are invalid
 	// randomPattern and randomColor only returns valid values, so the error can be ignored
-	pat, _ := NewPattern(randomPattern(), randomColor())
+	pat, err := NewPattern(randomPattern(), randomColor())
+	if err != nil {
+		log.Println("ERROR WHEN GENERATING RANDOM PATTERN")
+	}
 	return *pat
 }

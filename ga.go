@@ -65,19 +65,12 @@ func NewPopulation(size int) Population {
 	return pop
 }
 
-func test_solution() {
-	sol := NewSolution()
-	fmt.Println(sol)
-	fmt.Println("fitness:", sol.fitness())
-}
-
-func crossover(a, b Solution, point uint) Solution {
+func crossover(a, b Solution, point int) Solution {
 	c := NewSolution()
-	var i uint
-	for i = 0; i < point; i++ {
+	for i := 0; i < point; i++ {
 		c[i] = a[i]
 	}
-	for i = point; i < maxPatterns; i++ {
+	for i := point; i < maxPatterns; i++ {
 		c[i] = b[i]
 	}
 	return c
@@ -118,8 +111,8 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 		fmt.Println("average =", average)
 		var (
 			bestfitness, nextbestfitness float64
+			nextbestfitnessindex         = 0
 		)
-		nextbestfitnessindex := 0
 		for i, _ := range fit {
 			if fit[i] >= bestfitness {
 				nextbestfitness = bestfitness
@@ -181,7 +174,7 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 			}
 			// A certain chance for crossover
 			if rand.Float64() <= crossrate {
-				crossoverpoint := uint(rand.Intn(maxPatterns))
+				crossoverpoint := int(rand.Intn(maxPatterns))
 				pop[i] = crossover(pop[bestfitnessindex], pop[nextbestfitnessindex], crossoverpoint)
 			}
 			// A certain chance for new random variations
