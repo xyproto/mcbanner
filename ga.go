@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	MAXGENERATIONS = 300
-	POPSIZE        = 50
+	POPSIZE        = 2000
+	MAXGENERATIONS = 3000
 )
 
 // This is what every solution is being compared against
@@ -25,15 +25,14 @@ type Population []Solution
 type PopulationFitness []float64
 
 func NewPopulationFitness(popsize int) PopulationFitness {
-	return make(PopulationFitness, popsize)
-}
-
-func NewSolution() Solution {
-	return make([]Pattern, maxPatterns)
+	fmt.Println("Making new population fitness list")
+	fl := make(PopulationFitness, popsize)
+	fmt.Println("Done making new population fitness list")
+	return fl
 }
 
 func NewRandomSolution() Solution {
-	sol := NewSolution()
+	sol := make([]Pattern, maxPatterns)
 	for i := 0; i < len(sol); i++ {
 		sol[i] = NewRandomPattern()
 	}
@@ -41,7 +40,15 @@ func NewRandomSolution() Solution {
 }
 
 func (sol Solution) String() string {
-	return fmt.Sprintf("%v", sol)
+	//s := fmt.Sprintf("Solution with %d patterns: ", len(sol))
+	s := "Solution: "
+	for i := 0; i < len(sol); i++ {
+		s += sol[i].String()
+		if i != len(sol)-1 {
+			s += " | " // separator
+		}
+	}
+	return s + "\n"
 }
 
 func (sol Solution) Banner() *Banner {
@@ -53,6 +60,9 @@ func (sol Solution) Banner() *Banner {
 }
 
 func (sol Solution) fitness() float64 {
+	//if err := sol[0].Valid(); err != nil {
+	//	log.Fatalln("Can't find fitness for an invalid solution: ", err.Error())
+	//}
 	return Compare(sol.Banner(), target_png_bytes)
 }
 
@@ -66,7 +76,8 @@ func NewPopulation(size int) Population {
 }
 
 func crossover(a, b Solution, point int) Solution {
-	c := NewSolution()
+	// Can start with a blank solution, since the elements will be filled in
+	c := make([]Pattern, maxPatterns)
 	for i := 0; i < point; i++ {
 		c[i] = a[i]
 	}
@@ -101,8 +112,11 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 	for generation = 0; generation < MAXGENERATIONS; generation++ {
 		fmt.Println("Generation", generation)
 		fit := NewPopulationFitness(popsize)
+		//fmt.Println("fit ok")
+		//fmt.Println("population:", pop)
 		for i, s := range pop {
 			fit[i] = s.fitness()
+			//fmt.Printf("fit[%d] ok\n", i)
 		}
 		//fmt.Println(fit)
 		total := sum(fit)
@@ -127,6 +141,7 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 			fmt.Println("Found fitness 1")
 			break
 		}
+		fmt.Println("best solution:", pop[bestfitnessindex])
 		var (
 			mutrate    float64 = 0.0
 			crossrate  float64 = 0.1
@@ -135,15 +150,15 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 		for i, _ := range pop {
 			fitness := fit[i]
 			if average > 0.7 && fitness < 0.5 {
-				pop[i] = NewSolution()
+				pop[i] = NewRandomSolution()
 			} else if average > 0.8 && fitness < 0.6 {
-				pop[i] = NewSolution()
+				pop[i] = NewRandomSolution()
 			} else if average > 0.9 && fitness < 0.7 {
-				pop[i] = NewSolution()
+				pop[i] = NewRandomSolution()
 			} else if fitness < (average * 0.3) {
 				// 50% chance of being replaced with randomness
 				if rand.Float64() <= 0.5 {
-					pop[i] = NewSolution()
+					pop[i] = NewRandomSolution()
 				}
 			}
 			if bestfitness > average {
@@ -170,18 +185,26 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 			}
 			// A certain chance for mutation
 			if rand.Float64() <= mutrate {
-				pop[rand.Intn(int(popsize))].mutate()
+				// Changing one of the elements of a solution.
+				// Tested. Works.
+				i := rand.Intn(int(popsize))
+				pop[i].mutate()
 			}
 			// A certain chance for crossover
 			if rand.Float64() <= crossrate {
+				// Crossing the best and next best solution to a new solution.
+				// Tested. Works.
 				crossoverpoint := int(rand.Intn(maxPatterns))
 				pop[i] = crossover(pop[bestfitnessindex], pop[nextbestfitnessindex], crossoverpoint)
 			}
 			// A certain chance for new random variations
 			if rand.Float64() <= newpoprate {
-				pop[i] = NewSolution()
+				// Tested. Works.
+				pop[i] = NewRandomSolution()
 			}
 		}
+		fmt.Println("end of generation", generation)
+		//fmt.Println("population:", pop)
 	}
 	fmt.Println("generation", generation)
 	fmt.Println(pop[bestfitnessindex])

@@ -30,3 +30,5 @@ mcbanner
 web/web
 
 errors.err
+
+web/gin-bin

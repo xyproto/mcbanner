@@ -122,11 +122,22 @@ type Pattern struct {
 	color   int
 }
 
-func NewPattern(patId, Color int) (*Pattern, error) {
-	if (patId < PatternLowerThird) || (patId > PatternFull) {
-		return nil, errors.New(fmt.Sprintf("Invalid Pattern ID: %d\n", patId))
+func (pat *Pattern) Valid() error {
+	if (pat.pattern < PatternLowerThird) || (pat.pattern > PatternFull) {
+		return errors.New(fmt.Sprintf("Invalid Pattern ID: %d\n", pat.pattern))
 	}
-	return &Pattern{patId, Color}, nil
+	if (pat.color < ColorWhite) || (pat.color > ColorBrightWhite) {
+		return errors.New(fmt.Sprintf("Invalid Color ID: %d\n", pat.color))
+	}
+	return nil
+}
+
+func NewPattern(patId, Color int) (*Pattern, error) {
+	pat := &Pattern{patId, Color}
+	if err := pat.Valid(); err != nil {
+		return nil, err
+	}
+	return pat, nil
 }
 
 func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
