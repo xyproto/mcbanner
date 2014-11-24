@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	POPSIZE        = 2000
-	MAXGENERATIONS = 3000
+	POPSIZE        = 500 // 2000
+	MAXGENERATIONS = 3   // 3000
 )
 
 // This is what every solution is being compared against
@@ -25,15 +25,12 @@ type Population []Solution
 type PopulationFitness []float64
 
 func NewPopulationFitness(popsize int) PopulationFitness {
-	fmt.Println("Making new population fitness list")
-	fl := make(PopulationFitness, popsize)
-	fmt.Println("Done making new population fitness list")
-	return fl
+	return make(PopulationFitness, popsize)
 }
 
 func NewRandomSolution() Solution {
 	sol := make([]Pattern, maxPatterns)
-	for i := 0; i < len(sol); i++ {
+	for i := 0; i < maxPatterns; i++ {
 		sol[i] = NewRandomPattern()
 	}
 	return sol
@@ -42,9 +39,9 @@ func NewRandomSolution() Solution {
 func (sol Solution) String() string {
 	//s := fmt.Sprintf("Solution with %d patterns: ", len(sol))
 	s := "Solution: "
-	for i := 0; i < len(sol); i++ {
+	for i := 0; i < maxPatterns; i++ {
 		s += sol[i].String()
-		if i != len(sol)-1 {
+		if i != maxPatterns-1 {
 			s += " | " // separator
 		}
 	}
