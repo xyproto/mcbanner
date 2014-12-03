@@ -1,3 +1,4 @@
+* Renderer for the subset of SVG that is in use
 * Random generator counter
 * Better text in the howto (not "Black Black/Dyed blabla Banner")
 * New page for comparing an uploaded image with a randomly generated banner
