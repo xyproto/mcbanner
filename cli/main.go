@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/davecheney/profile"
-	"github.com/xyproto/mcbanner"
 	"io/ioutil"
 	"log"
+
+	"github.com/davecheney/profile"
+	"github.com/xyproto/mcbanner"
 )
 
 func main() {
@@ -15,5 +16,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not read: %s\n", targetImageFilename)
 	}
-	mcbanner.FindBest(mcbanner.Likeness, pngbytes)
+	mcbanner.FindBest(mcbanner.Likeness, pngbytes, "/tmp/best.png")
 }

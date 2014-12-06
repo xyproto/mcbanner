@@ -32,3 +32,4 @@ web/web
 errors.err
 
 web/gin-bin
+cli/cli
