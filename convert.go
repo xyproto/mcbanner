@@ -11,7 +11,7 @@ import (
 // Use rsvg to render svg (convert bytes from svg to png)
 func Convert(imagebytes []byte, fromformat, toformat string) []byte {
 	randomString := permissions.RandomHumanFriendlyString(8) // Collisions are rare and not critical, for this function
-	path := "/dev/shm/"
+	path := "/tmp/"
 	inputFilename := path + randomString + ".svg"
 	outputFilename := path + randomString + ".png"
 
