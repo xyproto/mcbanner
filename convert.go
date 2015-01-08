@@ -16,13 +16,11 @@ func Convert(imagebytes []byte, fromformat, toformat string) []byte {
 	outputFilename := path + randomString + ".png"
 
 	// write the .svg file
-	err := ioutil.WriteFile(inputFilename, imagebytes, 0600)
-	if err != nil {
+	if err := ioutil.WriteFile(inputFilename, imagebytes, 0600); err != nil {
 		panic(err)
 	}
 	// convert the .svg file to the output format (perhaps png)
-	err = exec.Command("rsvg-convert", inputFilename, "-b", "white", "-f", toformat, "-o", outputFilename).Run()
-	if err != nil {
+	if err := exec.Command("rsvg-convert", inputFilename, "-b", "white", "-f", toformat, "-o", outputFilename).Run(); err != nil {
 		panic(err)
 	}
 	// read the converted image
@@ -31,12 +29,10 @@ func Convert(imagebytes []byte, fromformat, toformat string) []byte {
 		panic(err)
 	}
 	// remove both temporary files
-	err = os.Remove(inputFilename)
-	if err != nil {
+	if err := os.Remove(inputFilename); err != nil {
 		panic(err)
 	}
-	err = os.Remove(outputFilename)
-	if err != nil {
+	if err = os.Remove(outputFilename); err != nil {
 		panic(err)
 	}
 	return b
