@@ -1,5 +1,5 @@
 #!/bin/sh
-export PORT=3000
+export PORT=3020
 SOURCE=
 for f in *.go ../*.go; do
   SOURCE+="$f "
