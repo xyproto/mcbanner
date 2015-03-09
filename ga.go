@@ -4,12 +4,13 @@ package mcbanner
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 )
 
 const (
-	POPSIZE        = 500 // 2000
-	MAXGENERATIONS = 3   // 3000
+	POPSIZE        = 800
+	MAXGENERATIONS = 50 // 3000
 )
 
 // This is what every solution is being compared against
@@ -97,7 +98,7 @@ func sum(scores []float64) float64 {
 	return total
 }
 
-func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
+func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte, bestFilename string) {
 	target_png_bytes = png_bytes
 	var (
 		bestfitnessindex     = 0
@@ -139,6 +140,7 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte) {
 			break
 		}
 		fmt.Println("best solution:", pop[bestfitnessindex])
+		ioutil.WriteFile(bestFilename, pop[bestfitnessindex].Banner().PNG(), 0644)
 		var (
 			mutrate    float64 = 0.0
 			crossrate  float64 = 0.1

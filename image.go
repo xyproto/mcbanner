@@ -38,9 +38,10 @@ func Value(r, g, b uint32) float64 {
 func Distance(c1, c2 color.Color) float64 {
 	r1, g1, b1, _ := c1.RGBA()
 	r2, g2, b2, _ := c2.RGBA()
-	v1 := Value(r1, g1, b1)
-	v2 := Value(r2, g2, b2)
-	return (Colordiff(r1, r2) + Colordiff(g1, g2) + Colordiff(b1, b2) + Valuediff(v1, v2)) * 0.25
+	//v1 := Value(r1, g1, b1)
+	//v2 := Value(r2, g2, b2)
+	//return (Colordiff(r1, r2) + Colordiff(g1, g2) + Colordiff(b1, b2) + Valuediff(v1, v2)) * 0.25
+	return (Colordiff(r1, r2) + Colordiff(g1, g2) + Colordiff(b1, b2)) * 0.33
 }
 
 // Find how visually similar two images are, from 0..1

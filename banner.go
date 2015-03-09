@@ -1,7 +1,6 @@
 package mcbanner
 
 import (
-	"github.com/quirkey/magick"
 	"github.com/xyproto/onthefly"
 	"log"
 )
@@ -68,19 +67,6 @@ func (b *Banner) Page() *onthefly.Page {
 
 func (b *Banner) SVG() string {
 	return b.Page().String()
-}
-
-// Use ImageMagick to convert bytes from one file format to another
-func Convert(imagebytes []byte, fromformat, toformat string) []byte {
-	img, err := magick.NewFromBlob(imagebytes, fromformat)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	imagebytesOut, err := img.ToBlob(toformat)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	return imagebytesOut
 }
 
 func (b *Banner) PNG() []byte {
