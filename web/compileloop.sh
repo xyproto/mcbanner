@@ -14,7 +14,8 @@ echo 'Reading pid'
 if [ -e $PIDFILE ]; then
   echo 'Killing server'
   kill `cat $PIDFILE` > /dev/null
-  rm $PIDFILE
+  rm "$PIDFILE"
+  rm "$SUMFILE"
 fi
 while true; do
   OLDM5=$M5
