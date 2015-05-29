@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"runtime"
 
 	"github.com/codegangsta/negroni"
 	"github.com/unrolled/render"
@@ -13,6 +14,8 @@ const (
 
 // Set up the paths and handlers then start serving.
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	// Create a Negroni instance and a ServeMux instance
 	n := negroni.Classic()
 	r := render.New(render.Options{})

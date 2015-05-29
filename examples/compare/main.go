@@ -10,4 +10,3 @@ func main() {
 	ban, _ := mcbanner.NewRandomBanner()
 	os.Stdout.Write(ban.PNG())
 }
-
