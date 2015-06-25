@@ -3,12 +3,15 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"runtime"
 
 	"github.com/davecheney/profile"
 	"github.com/xyproto/mcbanner"
 )
 
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	defer profile.Start(profile.CPUProfile).Stop()
 
 	targetImageFilename := "../web/public/img/c1.png"

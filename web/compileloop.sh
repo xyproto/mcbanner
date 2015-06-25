@@ -1,5 +1,5 @@
 #!/bin/sh
-export PORT=3000
+export PORT=3020
 SOURCE=
 for f in *.go ../*.go; do
   SOURCE+="$f "
@@ -14,7 +14,8 @@ echo 'Reading pid'
 if [ -e $PIDFILE ]; then
   echo 'Killing server'
   kill `cat $PIDFILE` > /dev/null
-  rm $PIDFILE
+  rm "$PIDFILE"
+  rm "$SUMFILE"
 fi
 while true; do
   OLDM5=$M5

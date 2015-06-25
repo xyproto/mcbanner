@@ -1,0 +1,14 @@
+[Unit]
+Description=mcbanner
+
+[Service]
+Type=simple
+User=alexander
+ExecStart=/home/alexander/go/src/github.com/xyproto/mcbanner/web/compileloop.sh &
+WorkingDirectory=/home/alexander/go/src/github.com/xyproto/mcbanner/web
+PIDFile=/tmp/mcbanner.pid
+Environment=GOPATH=/home/alexander/go
+After=redis.service
+
+[Install]
+WantedBy=multi-user.target
