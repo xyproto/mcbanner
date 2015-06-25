@@ -5,12 +5,12 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/xyproto/permissions2"
+	"github.com/xyproto/cookie"
 )
 
 // Use rsvg to render svg (convert bytes from svg to png)
 func Convert(imagebytes []byte, fromformat, toformat string) []byte {
-	randomString := permissions.RandomHumanFriendlyString(8) // Collisions are rare and not critical, for this function
+	randomString := cookie.RandomHumanFriendlyString(8) // Collisions are rare and not critical, for this function
 	path := "/tmp/"
 	inputFilename := path + randomString + ".svg"
 	outputFilename := path + randomString + ".png"
