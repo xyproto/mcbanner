@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	version_string = "MC Banner Generator 1.0.0"
+	version_string = "MC Banner Generator 2.0.0"
 )
 
 // Set up the paths and handlers then start serving.
