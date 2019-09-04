@@ -1,0 +1,12 @@
+github.com/codegangsta/negroni v1.0.0 h1:+aYywywx4bnKXWvoWtRfJ91vC59NbEhEY03sZjQhbVY=
+github.com/codegangsta/negroni v1.0.0/go.mod h1:v0y3T5G7Y1UlFfyxFn/QLRU4a2EuNau2iZY63YTKWo0=
+github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 h1:clC1lXBpe2kTj2VHdaIu9ajZQe4kcEY9j0NsnDDBZ3o=
+github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385/go.mod h1:0vRUJqYpeSZifjYj7uP3BG/gKcuzL9xWVV/Y+cK33KM=
+github.com/unrolled/render v1.0.1 h1:VDDnQQVfBMsOsp3VaCJszSO0nkBIVEYoPWeRThk9spY=
+github.com/unrolled/render v1.0.1/go.mod h1:gN9T0NhL4Bfbwu8ann7Ry/TGHYfosul+J0obPf6NBdM=
+github.com/xyproto/cookie v0.0.0-20181220103240-f4de411f45ff h1:G+UgV5480yPnIK9+aaz4Tx0l7hu8lcDuXc9SfTbK1+w=
+github.com/xyproto/cookie v0.0.0-20181220103240-f4de411f45ff/go.mod h1:+c0/g8lVJKAi+uZ/kPHqSzf2UsSI2If03smY6xITgtM=
+github.com/xyproto/onthefly v0.0.0-20180903110516-0f923083607c h1:VQRzHIVYEJRHWmFw7tQY+SqXHN9oeevc5M4emENWE/U=
+github.com/xyproto/onthefly v0.0.0-20180903110516-0f923083607c/go.mod h1:27Ze41xYDqyB6lkTJIuHqnqq3blDaJwUIlRJOS+bK/E=
+github.com/xyproto/randomstring v0.0.0-20181220103026-e5e8317e5d67 h1:SKnNWKHC0th19CZTOH/KQevGTolInAFI6yQcXBQB90E=
+github.com/xyproto/randomstring v0.0.0-20181220103026-e5e8317e5d67/go.mod h1:HcK1ojGYWgNJz1Rp9UouvxVGIWsMFAtkftDoHZ6DE9k=

@@ -1,5 +1,0 @@
-#!/bin/sh
-go get -d
-go build
-./render > out.png
-eog out.png

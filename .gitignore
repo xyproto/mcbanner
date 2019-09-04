@@ -27,9 +27,9 @@ mcbanner
 .nfs*
 *~
 
-web/web
-
 errors.err
 
-web/gin-bin
-cli/cli
+cmd/evolve/evolve
+cmd/mcweb/mcweb
+cmd/mcweb/gin-bin
+cmd/random/random
