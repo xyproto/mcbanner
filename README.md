@@ -14,6 +14,6 @@ Linux application for generating Minecraft banners.
 
 ## General information
 
-* Version: 0.1
+* Version: 1.0.0
 * License: MIT
-* Author: Alexander F. Rødseth
+* Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
