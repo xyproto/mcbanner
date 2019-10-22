@@ -125,7 +125,7 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte, be
 			bestfitness, nextbestfitness float64
 			nextbestfitnessindex         = 0
 		)
-		for i, _ := range fit {
+		for i := range fit {
 			if fit[i] >= bestfitness {
 				nextbestfitness = bestfitness
 				bestfitness = fit[i]
@@ -146,7 +146,7 @@ func FindBest(fitnessfunction func([]byte, []byte) float64, png_bytes []byte, be
 			crossrate  float64 = 0.1
 			newpoprate float64 = 0.0
 		)
-		for i, _ := range pop {
+		for i := range pop {
 			fitness := fit[i]
 			if average > 0.7 && fitness < 0.5 {
 				pop[i] = NewRandomSolution()

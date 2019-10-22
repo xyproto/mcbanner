@@ -76,6 +76,5 @@ func Likeness(png1, png2 []byte) float64 {
 
 // Compare a banner with a png file, return the likeness as float64
 func Compare(b *Banner, pngbytes []byte) float64 {
-	b_pngbytes := b.PNG()
-	return Likeness(b_pngbytes, pngbytes)
+	return Likeness(b.PNG(), pngbytes)
 }
