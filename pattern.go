@@ -3,7 +3,7 @@ package mcbanner
 import (
 	"errors"
 	"fmt"
-	"github.com/xyproto/onthefly"
+	"github.com/xyproto/tinysvg"
 	"math"
 	"strconv"
 )
@@ -140,7 +140,7 @@ func NewPattern(patId, Color int) (*Pattern, error) {
 	return pat, nil
 }
 
-func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
+func DrawPattern(svg *tinysvg.Tag, Pattern int, Color string) {
 	switch Pattern {
 	case PatternLowerThird: // Base Fess Banner
 		svg.Box(0, fullH-thirdH, fullW, fullH-thirdH, Color)
@@ -260,7 +260,7 @@ func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
 		a := 1.0
 		for y := 0; y < fullH; y++ {
 			a = 1.0 - (float64(y) / float64(fullH))
-			svg.Box(0, y, fullW, 1, onthefly.ColorStringAlpha(r, g, b, a))
+			svg.Box(0, y, fullW, 1, string(tinysvg.ColorBytesAlpha(r, g, b, a)))
 		}
 	case PatternGradientUp: // Base Gradient Banner
 		ur, _ := strconv.ParseUint(Color[1:3], 16, 0)
@@ -272,7 +272,7 @@ func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
 		a := 1.0
 		for y := 0; y < fullH; y++ {
 			a = float64(y) / float64(fullH)
-			svg.Box(0, y, fullW, 1, onthefly.ColorStringAlpha(r, g, b, a))
+			svg.Box(0, y, fullW, 1, string(tinysvg.ColorBytesAlpha(r, g, b, a)))
 		}
 	case PatternCreeper: // Black/Dyed Creeper Charge Banner
 		// eyes
@@ -374,8 +374,8 @@ func DrawPattern(svg *onthefly.Tag, Pattern int, Color string) {
 	}
 }
 
-func (p *Pattern) PatternString() string {
-	desc, ok := PatternDesc[p.pattern]
+func (pat *Pattern) PatternString() string {
+	desc, ok := PatternDesc[pat.pattern]
 	if !ok {
 		return "Unknown Pattern"
 	}
@@ -383,8 +383,8 @@ func (p *Pattern) PatternString() string {
 }
 
 // TODO: Switch the switch with a lookup like in PatternString
-func (p *Pattern) ColorString() string {
-	switch p.color {
+func (pat *Pattern) ColorString() string {
+	switch pat.color {
 	case ColorWhite:
 		return "White"
 	case ColorOrange:
@@ -424,6 +424,6 @@ func (p *Pattern) ColorString() string {
 	}
 }
 
-func (p *Pattern) String() string {
-	return p.ColorString() + " " + p.PatternString()
+func (pat *Pattern) String() string {
+	return pat.ColorString() + " " + pat.PatternString()
 }

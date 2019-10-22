@@ -1,7 +1,7 @@
 package mcbanner
 
 import (
-	"github.com/xyproto/onthefly"
+	"github.com/xyproto/tinysvg"
 	"log"
 )
 
@@ -42,7 +42,7 @@ func (b *Banner) AddPattern(p *Pattern) {
 	b.Patterns = append(b.Patterns, p)
 }
 
-func (b *Banner) Draw(svg *onthefly.Tag) {
+func (b *Banner) Draw(svg *tinysvg.Tag) {
 	// draw each Pattern
 	for _, p := range b.Patterns {
 		color, ok := colors[p.color]
@@ -53,24 +53,23 @@ func (b *Banner) Draw(svg *onthefly.Tag) {
 	}
 }
 
-// Generate a new Page for a banner, containing svg
-func (b *Banner) Page() *onthefly.Page {
+// Generate a new SVG image for the banner
+func (b *Banner) Image() *tinysvg.Document {
 	if b == nil {
 		log.Fatalln("Can't generate SVG for a *Banner that is nil!")
 	}
-	page, svg := onthefly.NewTinySVG(0, 0, BannerW, BannerH)
-	desc := svg.AddNewTag("desc")
-	desc.AddContent("A banner")
+	document, svg := tinysvg.NewTinySVG(BannerW, BannerH)
+	svg.Describe("A banner")
 	b.Draw(svg)
-	return page
+	return document
 }
 
-func (b *Banner) SVG() string {
-	return b.Page().String()
+func (b *Banner) SVG() []byte {
+	return b.Image().Bytes()
 }
 
 func (b *Banner) PNG() []byte {
-	return Convert([]byte(b.SVG()), "svg", "png")
+	return Convert(b.SVG(), "svg", "png")
 }
 
 func NewRandomBanner() (b *Banner, how []*Pattern) {

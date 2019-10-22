@@ -78,7 +78,7 @@ func comparison(mux *http.ServeMux, path string, r *render.Render) {
 	})
 	mux.HandleFunc(svgurl1, func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
-		fmt.Fprint(w, svgxml1)
+		w.Write(svgxml1)
 	})
 	//mux.HandleFunc(pngurl1, func(w http.ResponseWriter, req *http.Request) {
 	//	w.Header().Add("Content-Type", "image/png")
@@ -182,7 +182,7 @@ func patternGallery(mux *http.ServeMux, path string) {
 		svgurl := fmt.Sprintf("/img/banner_%d.svg", i)
 		mux.HandleFunc(svgurl, func(w http.ResponseWriter, req *http.Request) {
 			w.Header().Add("Content-Type", "image/svg+xml")
-			fmt.Fprint(w, svgxml)
+			w.Write(svgxml)
 		})
 
 		svgurls = append(svgurls, svgurl)
@@ -232,7 +232,7 @@ func randomBanner(mux *http.ServeMux, path string, r *render.Render) {
 	mux.HandleFunc("/img/random.svg", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Content-Type", "image/svg+xml")
 		b, _ := mcbanner.NewRandomBanner()
-		fmt.Fprint(w, b.SVG())
+		w.Write(b.SVG())
 	})
 
 }
