@@ -1,10 +1,12 @@
 module github.com/xyproto/mcbanner
 
-go 1.13
+go 1.11
 
 require (
 	github.com/codegangsta/negroni v1.0.0
 	github.com/unrolled/render v1.0.1
 	github.com/xyproto/cookie v0.0.0-20181220103240-f4de411f45ff
-	github.com/xyproto/onthefly v0.0.0-20180903110516-0f923083607c
+	github.com/xyproto/onthefly v0.0.0-20191021105244-b7c58dc7f08b
+	github.com/xyproto/randomstring v0.0.0-20181222003104-0f764aabc45a // indirect
+	github.com/xyproto/tinysvg v0.0.0-20191021103805-f0d4368c3445
 )
