@@ -1,14 +1,14 @@
 # mcbanner
 
-Linux application for generating Minecraft banners.
+Application for generating Minecraft banners.
 
 ## Includes
 
 * A web server/page showing the variations of Minecraft banners, as SVG approximations (`mcweb`).
-* A commandline application for evolving Minecraft banners with GAs (`evolve`).
+* A commandline application for evolving Minecraft banners with genetic algorithms (`evolve`).
 * Go code for generating a random SVG banner and rendering it as PNG by using `rsvg-convert` (`random`).
 
-## The original goal
+## Original goal
 
 * Given an image, get the steps for creating the closest looking Minecraft banner. This goal is a work in progress, since the evolution is not rapid enough. Perhaps using smaller images when rendering from SVG, or another algorithm, would work.
 
@@ -16,4 +16,3 @@ Linux application for generating Minecraft banners.
 
 * Version: 2.0.1
 * License: MIT
-* Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
