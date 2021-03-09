@@ -8,5 +8,5 @@ require (
 	github.com/xyproto/cookie v0.0.0-20181220103240-f4de411f45ff
 	github.com/xyproto/onthefly v0.0.0-20191021105244-b7c58dc7f08b
 	github.com/xyproto/randomstring v0.0.0-20181222003104-0f764aabc45a // indirect
-	github.com/xyproto/tinysvg v0.0.0-20191021103805-f0d4368c3445
+	github.com/xyproto/tinysvg v0.0.0-20191101100520-ef4e4a2e5b89
 )
